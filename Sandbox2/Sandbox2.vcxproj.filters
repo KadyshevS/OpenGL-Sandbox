@@ -2,6 +2,22 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="glad.c" />
+    <ClCompile Include="src\glad.c" />
+    <ClCompile Include="src\KDE\Shader.cpp" />
+    <ClCompile Include="src\KDE\VBO.cpp" />
+    <ClCompile Include="src\KDE\EBO.cpp" />
+    <ClCompile Include="src\KDE\VAO.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\shaders\default.vert" />
+    <None Include="res\shaders\default.frag" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\KDE\Shader.h" />
+    <ClInclude Include="src\KDE\VBO.h" />
+    <ClInclude Include="src\KDE\EBO.h" />
+    <ClInclude Include="src\KDE\VAO.h" />
+    <ClInclude Include="src\KDE\KDstd.h" />
+    <ClInclude Include="src\KDE\gl.h" />
   </ItemGroup>
 </Project>
