@@ -13,7 +13,7 @@ namespace kde
 		VAO();
 		~VAO() = default;
 
-		void LinkVBO(VBO vbo, GLuint layout, GLint size);
+		void LinkAttrib(VBO vbo, GLuint layout, GLuint numComponents, GLenum type, GLsizeiptr stride, void* offset);
 		void Bind();
 		void Unbind();
 		void Delete();

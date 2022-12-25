@@ -7,6 +7,7 @@
 namespace kde
 {
 	std::string GetFileSource(std::string filePath);
+	unsigned int CompileShader(unsigned int type, const std::string& source);
 
 	class Shader
 	{

@@ -7,10 +7,10 @@ namespace kde
 		glGenVertexArrays(1, &id);
 	}
 
-	void VAO::LinkVBO(VBO vbo, GLuint layout, GLint size)
+	void VAO::LinkAttrib(VBO vbo, GLuint layout, GLuint numComponents, GLenum type, GLsizeiptr stride, void* offset)
 	{
-		vbo.Bind();
-		glVertexAttribPointer(layout, size, GL_FLOAT, GL_FALSE, size * sizeof(float), (void*)0);
+		vbo.Bind(); 
+		glVertexAttribPointer(layout, numComponents, type, GL_FALSE, stride, offset);
 		glEnableVertexAttribArray(layout);
 		vbo.Unbind();
 	}

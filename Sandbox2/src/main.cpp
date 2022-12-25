@@ -14,21 +14,21 @@ int main()
 //	Creating verticies of triangle
 	GLfloat verts[] =
 	{
-		 0.0f ,  0.5f,
-		-0.25f,  0.0f,
-		 0.25f,  0.0f,
-		-0.5f , -0.5f,
-		-0.5f , -0.5f,
-		 0.0f , -0.5f,
-		 0.5f , -0.5f,
+//			POSITION			  COLOR
+		  0.0f ,  0.5f,		1.0f, 0.0f, 0.0f,
+		 -0.5f , -0.5f,		0.0f, 1.0f, 0.0f,
+		  0.5f , -0.5f,		0.0f, 0.0f, 1.0f,
+		 -0.25f,  0.0f,		1.0f, 1.0f, 0.0f,
+		  0.25f,  0.0f,		0.0f, 1.0f, 1.0f,
+		  0.0f , -0.5f,		1.0f, 0.0f, 1.0f,
 	};
 
 //	Creating array of verticies
 	GLuint indicies[] =
 	{
-		0, 1, 2,
-		1, 4, 5,
-		2, 5, 6,
+		0, 3, 4,
+		3, 1, 5,
+		4, 5, 2,
 	};
 
 //	Creating window
@@ -56,20 +56,21 @@ int main()
 	kde::VBO vbo1(verts, sizeof(verts));
 	kde::EBO ebo1(indicies, sizeof(indicies));
 	
-	vao1.LinkVBO(vbo1, 0, 2);
+	vao1.LinkAttrib( vbo1, 0, 2, GL_FLOAT, 5 * sizeof(float), (void*)0 );
+	vao1.LinkAttrib( vbo1, 1, 3, GL_FLOAT, 5 * sizeof(float), (void*)(2 * sizeof(float)) );
 
 	vao1.Unbind();
 	vbo1.Unbind();
 	ebo1.Unbind();
 
 //	Main loop
+	unsigned int i = 0;
 	while ( !glfwWindowShouldClose(win) )
 	{
-		glClearColor(0.2f, 0.3f, 0.8f, 1.0f);
+		glClearColor(0.2f, 0.3f, 0.8f, 0.5f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		shdr1.Use();
 		vao1.Bind();
-		
 		glDrawElements(GL_TRIANGLES, 9, GL_UNSIGNED_INT, NULL);
 
 		glfwSwapBuffers(win);
