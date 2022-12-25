@@ -149,10 +149,12 @@
   <ItemGroup>
     <ClCompile Include="src\glad.c" />
     <ClCompile Include="src\KDE\EBO.cpp" />
+    <ClCompile Include="src\KDE\Texture.cpp" />
     <ClCompile Include="src\KDE\VAO.cpp" />
     <ClCompile Include="src\KDE\VBO.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\KDE\Shader.cpp" />
+    <ClCompile Include="src\stb.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\default.frag" />
@@ -163,8 +165,12 @@
     <ClInclude Include="src\KDE\gl.h" />
     <ClInclude Include="src\KDE\KDstd.h" />
     <ClInclude Include="src\KDE\Shader.h" />
+    <ClInclude Include="src\KDE\Texture.h" />
     <ClInclude Include="src\KDE\VAO.h" />
     <ClInclude Include="src\KDE\VBO.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\textures\kot.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

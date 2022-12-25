@@ -7,6 +7,8 @@
     <ClCompile Include="src\KDE\VBO.cpp" />
     <ClCompile Include="src\KDE\EBO.cpp" />
     <ClCompile Include="src\KDE\VAO.cpp" />
+    <ClCompile Include="src\stb.cpp" />
+    <ClCompile Include="src\KDE\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\default.vert" />
@@ -19,5 +21,9 @@
     <ClInclude Include="src\KDE\VAO.h" />
     <ClInclude Include="src\KDE\KDstd.h" />
     <ClInclude Include="src\KDE\gl.h" />
+    <ClInclude Include="src\KDE\Texture.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\textures\kot.jpg" />
   </ItemGroup>
 </Project>

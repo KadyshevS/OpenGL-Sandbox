@@ -16,7 +16,6 @@ namespace kde
 
 	public:
 		Shader(const std::string& vertexShader, const std::string& fragmentShader);
-		Shader(const Shader&) = delete;
 		~Shader() = default;
 
 		void Use();
