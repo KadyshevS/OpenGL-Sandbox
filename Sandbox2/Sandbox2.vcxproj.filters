@@ -9,6 +9,7 @@
     <ClCompile Include="src\KDE\VAO.cpp" />
     <ClCompile Include="src\stb.cpp" />
     <ClCompile Include="src\KDE\Texture.cpp" />
+    <ClCompile Include="src\KDE\FrameTimer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\default.vert" />
@@ -22,8 +23,10 @@
     <ClInclude Include="src\KDE\KDstd.h" />
     <ClInclude Include="src\KDE\gl.h" />
     <ClInclude Include="src\KDE\Texture.h" />
+    <ClInclude Include="src\KDE\FrameTimer.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\textures\kot.jpg" />
+    <Image Include="res\textures\brick.jpg" />
   </ItemGroup>
 </Project>

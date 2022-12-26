@@ -149,6 +149,7 @@
   <ItemGroup>
     <ClCompile Include="src\glad.c" />
     <ClCompile Include="src\KDE\EBO.cpp" />
+    <ClCompile Include="src\KDE\FrameTimer.cpp" />
     <ClCompile Include="src\KDE\Texture.cpp" />
     <ClCompile Include="src\KDE\VAO.cpp" />
     <ClCompile Include="src\KDE\VBO.cpp" />
@@ -162,6 +163,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\KDE\EBO.h" />
+    <ClInclude Include="src\KDE\FrameTimer.h" />
     <ClInclude Include="src\KDE\gl.h" />
     <ClInclude Include="src\KDE\KDstd.h" />
     <ClInclude Include="src\KDE\Shader.h" />
@@ -170,6 +172,7 @@
     <ClInclude Include="src\KDE\VBO.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="res\textures\brick.jpg" />
     <Image Include="res\textures\kot.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
