@@ -1,13 +1,16 @@
 #pragma once
 #include <chrono>
 
-class FrameTimer
+namespace kde
 {
-	std::chrono::steady_clock::time_point last;
+	class FrameTimer
+	{
+		std::chrono::steady_clock::time_point last;
 
-public:
-	FrameTimer() noexcept;
+	public:
+		FrameTimer() noexcept;
 
-	float Mark() noexcept;
-	float Peek() const noexcept;
-};
+		float Mark() noexcept;
+		float Peek() const noexcept;
+	};
+}

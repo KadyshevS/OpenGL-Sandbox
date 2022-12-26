@@ -148,6 +148,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\glad.c" />
+    <ClCompile Include="src\KDE\Camera.cpp" />
     <ClCompile Include="src\KDE\EBO.cpp" />
     <ClCompile Include="src\KDE\FrameTimer.cpp" />
     <ClCompile Include="src\KDE\Texture.cpp" />
@@ -162,6 +163,7 @@
     <None Include="res\shaders\default.vert" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\KDE\Camera.h" />
     <ClInclude Include="src\KDE\EBO.h" />
     <ClInclude Include="src\KDE\FrameTimer.h" />
     <ClInclude Include="src\KDE\gl.h" />

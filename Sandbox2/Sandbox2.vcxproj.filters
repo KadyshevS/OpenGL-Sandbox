@@ -10,6 +10,7 @@
     <ClCompile Include="src\stb.cpp" />
     <ClCompile Include="src\KDE\Texture.cpp" />
     <ClCompile Include="src\KDE\FrameTimer.cpp" />
+    <ClCompile Include="src\KDE\Camera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\default.vert" />
@@ -24,6 +25,7 @@
     <ClInclude Include="src\KDE\gl.h" />
     <ClInclude Include="src\KDE\Texture.h" />
     <ClInclude Include="src\KDE\FrameTimer.h" />
+    <ClInclude Include="src\KDE\Camera.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\textures\kot.jpg" />
