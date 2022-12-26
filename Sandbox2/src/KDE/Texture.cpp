@@ -27,7 +27,7 @@ namespace kde
 		glBindTexture(texType, 0);
 	}
 
-	void Texture::texUnit(kde::Shader shader, const char* uniform, GLuint unit)
+	void Texture::texUnit(kde::Shader& shader, const char* uniform, GLuint unit)
 	{
 	//	Bind texture sampler
 		GLuint texUni = glGetUniformLocation(shader.mProgram, "tex0");

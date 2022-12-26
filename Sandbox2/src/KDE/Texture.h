@@ -18,7 +18,7 @@ namespace kde
 	public:
 		Texture(const std::string& image, GLenum texType, GLenum slot, GLenum format, GLenum pixelType);
 
-		void texUnit(kde::Shader shader, const char* uniform, GLuint unit);
+		void texUnit(kde::Shader& shader, const char* uniform, GLuint unit);
 		void Bind();
 		void Unbind();
 		void Delete();
