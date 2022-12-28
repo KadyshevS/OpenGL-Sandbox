@@ -9,7 +9,7 @@ namespace kde
 		position(position)
 	{}
 
-	void Camera::Matrix(float FOVdeg, float nearPlane, float farPlane, kde::Shader& shader, const char* uniform)
+	void Camera::UpdateMatrix(float FOVdeg, float nearPlane, float farPlane)
 	{
 		glm::mat4 view(1.0f);
 		glm::mat4 proj(1.0f);
@@ -17,7 +17,11 @@ namespace kde
 		view = glm::lookAt(position, position + orientation, up);
 		proj = glm::perspective(glm::radians(FOVdeg), (float)(width / height), nearPlane, farPlane);
 
-		glUniformMatrix4fv( glGetUniformLocation(shader.mProgram, uniform), 1, GL_FALSE, glm::value_ptr(proj * view) );
+		cameraMatrix = proj * view;
+	}
+	void Camera::Matrix(kde::Shader& shader, const char* uniform)
+	{
+		glUniformMatrix4fv(glGetUniformLocation(shader.mProgram, uniform), 1, GL_FALSE, glm::value_ptr(cameraMatrix));
 	}
 	void Camera::Input(GLFWwindow* window, const float dt)
 	{
@@ -47,7 +51,7 @@ namespace kde
 		}
 		if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
 		{
-			speed = 255.0f;
+			speed = 255.0f * 1.5f;
 		}
 		if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_RELEASE)
 		{
@@ -95,8 +99,8 @@ namespace kde
 
 		// Normalizes and shifts the coordinates of the cursor such that they begin in the middle of the screen
 		// and then "transforms" them into degrees 
-		float rotX = sensetivity * (float)dt * (float)(mouseY - (height / 2)) / height;
-		float rotY = sensetivity * (float)dt * (float)(mouseX - (width / 2)) / width;
+		float rotX = sensetivity * (float)(mouseY - (height / 2)) / height;
+		float rotY = sensetivity * (float)(mouseX - (width / 2)) / width;
 
 		// Calculates upcoming vertical change in the Orientation
 		glm::vec3 newOrientation = glm::rotate(orientation, glm::radians(-rotX), glm::normalize(glm::cross(orientation, up)));

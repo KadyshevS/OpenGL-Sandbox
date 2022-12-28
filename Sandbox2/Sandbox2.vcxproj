@@ -161,6 +161,8 @@
   <ItemGroup>
     <None Include="res\shaders\default.frag" />
     <None Include="res\shaders\default.vert" />
+    <None Include="res\shaders\light.frag" />
+    <None Include="res\shaders\light.vert" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\KDE\Camera.h" />
