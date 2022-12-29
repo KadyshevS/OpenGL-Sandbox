@@ -151,6 +151,8 @@
     <ClCompile Include="src\KDE\Camera.cpp" />
     <ClCompile Include="src\KDE\EBO.cpp" />
     <ClCompile Include="src\KDE\FrameTimer.cpp" />
+    <ClCompile Include="src\KDE\GL\GLFW.cpp" />
+    <ClCompile Include="src\KDE\GL\Window.cpp" />
     <ClCompile Include="src\KDE\Texture.cpp" />
     <ClCompile Include="src\KDE\VAO.cpp" />
     <ClCompile Include="src\KDE\VBO.cpp" />
@@ -169,6 +171,9 @@
     <ClInclude Include="src\KDE\EBO.h" />
     <ClInclude Include="src\KDE\FrameTimer.h" />
     <ClInclude Include="src\KDE\gl.h" />
+    <ClInclude Include="src\KDE\GL\GLFW.h" />
+    <ClInclude Include="src\KDE\GL\GLstd.h" />
+    <ClInclude Include="src\KDE\GL\Window.h" />
     <ClInclude Include="src\KDE\KDstd.h" />
     <ClInclude Include="src\KDE\Shader.h" />
     <ClInclude Include="src\KDE\Texture.h" />
@@ -178,6 +183,8 @@
   <ItemGroup>
     <Image Include="res\textures\brick.jpg" />
     <Image Include="res\textures\kot.jpg" />
+    <Image Include="res\textures\planks.png" />
+    <Image Include="res\textures\planksSpec.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

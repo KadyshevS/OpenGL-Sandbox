@@ -1,56 +1,36 @@
 #include <iostream>
 #include "KDE/KDstd.h"
+#include "KDE/GL/GLstd.h"
 
-const unsigned int WIDTH = 800;
-const unsigned int HEIGHT = 800;
+const unsigned constexpr int WIDTH = 800;
+const unsigned constexpr int HEIGHT = 800;
 
 int main()
 {
-//	Initialize GLFW
-	glfwInit();
-//	Set OpenGL version
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-			   
-//	Creating verticies of triangle
+//	Initializing GLFW & creating window
+	GL::GLFW glfw(3, 3);
+	GL::Window window(WIDTH, HEIGHT, "OpenGL Test");
+
+	//	Creating arrays of verticies & indicies of pyramid
 	GLfloat verts[] =
 	{
-	//     COORDINATES		 /    TexCoord	  /		  NORMALS		/   //
+//	   /    COORDINATES		 /    TexCoord	  /		  NORMALS		/   //
 		-0.5f, 0.0f,  0.5f,		0.0f, 0.0f,      0.0f, -1.0f, 0.0f,
 		-0.5f, 0.0f, -0.5f,		0.0f, 5.0f,      0.0f, -1.0f, 0.0f,
 		 0.5f, 0.0f, -0.5f,		5.0f, 5.0f,      0.0f, -1.0f, 0.0f,
 		 0.5f, 0.0f,  0.5f,		5.0f, 0.0f,      0.0f, -1.0f, 0.0f,
-
-		-0.5f, 0.0f,  0.5f,		0.0f, 0.0f,     -0.8f, 0.5f,  0.0f,
-		-0.5f, 0.0f, -0.5f,		5.0f, 0.0f,     -0.8f, 0.5f,  0.0f,
-		 0.0f, 0.8f,  0.0f,		2.5f, 5.0f,     -0.8f, 0.5f,  0.0f,
-
-		-0.5f, 0.0f, -0.5f,		5.0f, 0.0f,      0.0f, 0.5f, -0.8f,
-		 0.5f, 0.0f, -0.5f,		0.0f, 0.0f,      0.0f, 0.5f, -0.8f,
-		 0.0f, 0.8f,  0.0f,		2.5f, 5.0f,      0.0f, 0.5f, -0.8f,
-
-		 0.5f, 0.0f, -0.5f,		0.0f, 0.0f,      0.8f, 0.5f,  0.0f,
-		 0.5f, 0.0f,  0.5f,		5.0f, 0.0f,      0.8f, 0.5f,  0.0f,
-		 0.0f, 0.8f,  0.0f,		2.5f, 5.0f,      0.8f, 0.5f,  0.0f,
-
-		 0.5f, 0.0f,  0.5f,		5.0f, 0.0f,      0.0f, 0.5f,  0.8f,
-		-0.5f, 0.0f,  0.5f,		0.0f, 0.0f,      0.0f, 0.5f,  0.8f,
-		 0.0f, 0.8f,  0.0f,		2.5f, 5.0f,      0.0f, 0.5f,  0.8f 
-	};	
-
-//	Creating array of verticies
+	};
 	GLuint indicies[] =
 	{
-		0,	1,	2, 
-		0,	2,	3, 
-		4,	6,	5, 
-		7,	9,	8, 
-		10, 12, 11, 
-		13, 15, 14, 
+		0,	1,	2,
+		0,	2,	3,
+		4,	6,	5,
+		7,	9,	8,
+		10, 12, 11,
+		13, 15, 14,
 	};
 
-//	Creating buffer of verticies for light source cube
+	//	Creating arrays of verticies & indicies of light source cube
 	GLfloat lightVerts[] =
 	{
 		-1.0f, -1.0f,  1.0f,
@@ -62,7 +42,6 @@ int main()
 		 1.0f,  1.0f, -1.0f,
 		-1.0f,  1.0f, -1.0f,
 	};
-
 	GLuint lightIndicies[] =
 	{
 		0, 1, 2,
@@ -71,29 +50,13 @@ int main()
 		4, 6, 7,
 		4, 0, 3,
 		4, 3, 7,
-		1, 2, 6, 
+		1, 2, 6,
 		1, 5, 6,
 		3, 7, 6,
 		3, 2, 6,
 		0, 1, 4,
 		1, 4, 5,
 	};
-
-//	Creating window
-	GLFWwindow* win = glfwCreateWindow(WIDTH, HEIGHT, "OpenGL Test", NULL, NULL);
-	if (win == NULL)
-	{
-		std::cout << "Failed to create window." << std::endl;
-		glfwTerminate();
-		return -1;
-	}
-
-//	Set Current context
-	glfwMakeContextCurrent(win);
-	
-	gladLoadGL();
-
-	glViewport(0, 0, WIDTH, HEIGHT);
 
 //	Creating & bind Shaders, VAO, VBO, EBO
 	kde::Shader pyramidShader("default", "default");
@@ -127,7 +90,7 @@ int main()
 	lightVBO.Unbind();
 	lightEBO.Unbind();
 
-	glm::vec3 lightPos = glm::vec3(0.0f, 0.5f, 0.5f);
+	glm::vec3 lightPos = glm::vec3(0.0f, 0.2f, -0.2f);
 	glm::vec3 lightScale = glm::vec3(0.05f, 0.05f, 0.05f);
 	glm::mat4 lightModel = glm::mat4(1.0f);
 	lightModel = glm::translate(lightModel, lightPos);
@@ -150,8 +113,10 @@ int main()
 	glUniform3f(glGetUniformLocation(pyramidShader.mProgram, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
 
 //	Texture init
-	kde::Texture tex0( "brick.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA );
+	kde::Texture tex0( "planks.png", GL_TEXTURE_2D, 0, GL_RGBA );
 	tex0.texUnit(pyramidShader, "tex0", 0);
+	kde::Texture tex1( "planksSpec.png", GL_TEXTURE_2D, 1, GL_RED );
+	tex0.texUnit(pyramidShader, "tex1", 1);
 	
 	tex0.Unbind();
 
@@ -162,18 +127,19 @@ int main()
 	kde::Camera cam(WIDTH, HEIGHT, { 0.0f, 0.0f, 2.0f });
 
 //	Main loop
-	while ( !glfwWindowShouldClose(win) )
+	while ( !glfwWindowShouldClose(window.getWindowInst()) )
 	{
 		glClearColor(0.2f, 0.3f, 0.8f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		cam.UpdateMatrix(65.0f, 0.1f, 100.f);
+		cam.UpdateMatrix(65.0f, 0.01f, 100.f);
 
 		pyramidShader.Use();
 		glUniform3f(glGetUniformLocation(pyramidShader.mProgram, "camPos"), cam.position.x, cam.position.y, cam.position.z);
 
 		cam.Matrix(pyramidShader, "camMatrix");
-		cam.Input(win, 0.000001f);
+		cam.Input(window.getWindowInst(), 0.000001f);
 		tex0.Bind();
+		tex1.Bind();
 		vao1.Bind();
 		glDrawElements(GL_TRIANGLES, sizeof(indicies)/sizeof(int), GL_UNSIGNED_INT, 0);
 
@@ -182,7 +148,7 @@ int main()
 		lightVAO.Bind();
 		glDrawElements(GL_TRIANGLES, sizeof(lightIndicies)/sizeof(int), GL_UNSIGNED_INT, 0);
 
-		glfwSwapBuffers(win);
+		glfwSwapBuffers(window.getWindowInst());
 		glfwPollEvents();
 	}
 	
@@ -193,7 +159,5 @@ int main()
 	tex0.Delete();
 	pyramidShader.Delete();
 
-	glfwDestroyWindow(win);
-	glfwTerminate();
 	return 0;
 }

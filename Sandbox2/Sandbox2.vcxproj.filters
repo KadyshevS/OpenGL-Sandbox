@@ -11,6 +11,8 @@
     <ClCompile Include="src\KDE\Texture.cpp" />
     <ClCompile Include="src\KDE\FrameTimer.cpp" />
     <ClCompile Include="src\KDE\Camera.cpp" />
+    <ClCompile Include="src\KDE\GL\GLFW.cpp" />
+    <ClCompile Include="src\KDE\GL\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\default.vert" />
@@ -28,9 +30,14 @@
     <ClInclude Include="src\KDE\Texture.h" />
     <ClInclude Include="src\KDE\FrameTimer.h" />
     <ClInclude Include="src\KDE\Camera.h" />
+    <ClInclude Include="src\KDE\GL\GLFW.h" />
+    <ClInclude Include="src\KDE\GL\GLstd.h" />
+    <ClInclude Include="src\KDE\GL\Window.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\textures\kot.jpg" />
     <Image Include="res\textures\brick.jpg" />
+    <Image Include="res\textures\planks.png" />
+    <Image Include="res\textures\planksSpec.png" />
   </ItemGroup>
 </Project>

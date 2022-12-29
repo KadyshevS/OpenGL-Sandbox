@@ -2,7 +2,7 @@
 
 namespace kde
 {
-	Texture::Texture(const std::string& image, GLenum texType, GLenum slot, GLenum format)
+	Texture::Texture(const std::string& image, GLenum texType, GLuint slot, GLenum format)
 	{
 	//	Loading texture
 		type = texType;
@@ -14,11 +14,12 @@ namespace kde
 		glGenTextures(1, &id);
 		// Assigns the texture to a Texture Unit
 		glActiveTexture(slot);
+		unit = slot;
 		glBindTexture(texType, id);
 
 		// Configures the type of algorithm that is used to make the image smaller or bigger
-		glTexParameteri(texType, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
-		glTexParameteri(texType, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(texType, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glTexParameteri(texType, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 		// Configures the way the texture repeats (if it does at all)
 		glTexParameteri(texType, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -43,12 +44,13 @@ namespace kde
 	void Texture::texUnit(kde::Shader& shader, const char* uniform, GLuint unit)
 	{
 	//	Bind texture sampler
-		GLuint texUni = glGetUniformLocation(shader.mProgram, "tex0");
+		GLuint texUni = glGetUniformLocation(shader.mProgram, uniform);
 		shader.Use();
 		glUniform1i(texUni, unit);
 	}
 	void Texture::Bind()
 	{
+		glActiveTexture(GL_TEXTURE0 + unit);
 		glBindTexture(type, id);
 	}
 	void Texture::Unbind()
