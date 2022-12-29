@@ -14,11 +14,11 @@ int main()
 	//	Creating arrays of verticies & indicies of pyramid
 	GLfloat verts[] =
 	{
-//	   /    COORDINATES		 /    TexCoord	  /		  NORMALS		/   //
-		-0.5f, 0.0f,  0.5f,		0.0f, 0.0f,      0.0f, -1.0f, 0.0f,
-		-0.5f, 0.0f, -0.5f,		0.0f, 5.0f,      0.0f, -1.0f, 0.0f,
-		 0.5f, 0.0f, -0.5f,		5.0f, 5.0f,      0.0f, -1.0f, 0.0f,
-		 0.5f, 0.0f,  0.5f,		5.0f, 0.0f,      0.0f, -1.0f, 0.0f,
+//	   /    COORDINATES		 /    TexCoord   /	    NORMALS      /  //
+	-1.0f, 0.0f,  1.0f,			0.0f, 0.0f,		0.0f, 1.0f, 0.0f,
+	-1.0f, 0.0f, -1.0f,			0.0f, 1.0f,		0.0f, 1.0f, 0.0f,
+	 1.0f, 0.0f, -1.0f,			1.0f, 1.0f,		0.0f, 1.0f, 0.0f,
+	 1.0f, 0.0f,  1.0f,			1.0f, 0.0f,		0.0f, 1.0f, 0.0f
 	};
 	GLuint indicies[] =
 	{
@@ -99,7 +99,7 @@ int main()
 	glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 
 	glm::vec3 pyramidPos = glm::vec3(0.0f, 0.0f, 0.0f);
-	glm::vec3 pyramidScale = glm::vec3(1.0f, 1.0f, 1.0f);
+	glm::vec3 pyramidScale = glm::vec3(0.75f, 0.75f, 0.75f);
 	glm::mat4 pyramidModel = glm::mat4(1.0f);
 	pyramidModel = glm::translate(pyramidModel, pyramidPos);
 	pyramidModel = glm::scale(pyramidModel, pyramidScale);
@@ -131,7 +131,7 @@ int main()
 	{
 		glClearColor(0.2f, 0.3f, 0.8f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		cam.UpdateMatrix(65.0f, 0.01f, 100.f);
+		cam.UpdateMatrix(65.0f, 0.05f, 100.f);
 
 		pyramidShader.Use();
 		glUniform3f(glGetUniformLocation(pyramidShader.mProgram, "camPos"), cam.position.x, cam.position.y, cam.position.z);
