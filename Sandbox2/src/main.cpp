@@ -11,38 +11,32 @@ int main()
 	GL::GLFW glfw(3, 3);
 	GL::Window window(WIDTH, HEIGHT, "OpenGL Test");
 
-	//	Creating arrays of verticies & indicies of pyramid
-	GLfloat verts[] =
+	Vertex vertices[] =
 	{
-//	   /    COORDINATES		 /    TexCoord   /	    NORMALS      /  //
-	-1.0f, 0.0f,  1.0f,			0.0f, 0.0f,		0.0f, 1.0f, 0.0f,
-	-1.0f, 0.0f, -1.0f,			0.0f, 1.0f,		0.0f, 1.0f, 0.0f,
-	 1.0f, 0.0f, -1.0f,			1.0f, 1.0f,		0.0f, 1.0f, 0.0f,
-	 1.0f, 0.0f,  1.0f,			1.0f, 0.0f,		0.0f, 1.0f, 0.0f
+		{ {-1.0f, 0.0f, 1.0f }, { 1.0f, 1.0f, 1.0f }, { 0.0f, 1.0f, 0.0f }, { 0.0f, 0.0f } },
+		{ {-1.0f, 0.0f,-1.0f }, { 1.0f, 1.0f, 1.0f }, { 0.0f, 1.0f, 0.0f }, { 0.0f, 1.0f } },
+		{ { 1.0f, 0.0f,-1.0f }, { 1.0f, 1.0f, 1.0f }, { 0.0f, 1.0f, 0.0f }, { 1.0f, 1.0f } },
+		{ { 1.0f, 0.0f, 1.0f }, { 1.0f, 1.0f, 1.0f }, { 0.0f, 1.0f, 0.0f }, { 1.0f, 0.0f } }
 	};
-	GLuint indicies[] =
+	GLuint indices[] =
 	{
-		0,	1,	2,
-		0,	2,	3,
-		4,	6,	5,
-		7,	9,	8,
-		10, 12, 11,
-		13, 15, 14,
+		0, 1, 2,
+		0, 2, 3
 	};
 
-	//	Creating arrays of verticies & indicies of light source cube
-	GLfloat lightVerts[] =
-	{
-		-1.0f, -1.0f,  1.0f,
-		 1.0f, -1.0f,  1.0f,
-		 1.0f,  1.0f,  1.0f,
-		-1.0f,  1.0f,  1.0f,
-		-1.0f, -1.0f, -1.0f,
-		 1.0f, -1.0f, -1.0f,
-		 1.0f,  1.0f, -1.0f,
-		-1.0f,  1.0f, -1.0f,
+//	Creating arrays of vertices & indicies of light source cube
+	Vertex lightVertices[] =
+	{//			|   COORDINATES   |
+		{ {-1.0f,-1.0f, 1.0f} },
+		{ { 1.0f,-1.0f, 1.0f} },
+		{ { 1.0f, 1.0f, 1.0f} },
+		{ {-1.0f, 1.0f, 1.0f} },
+		{ {-1.0f,-1.0f,-1.0f} },
+		{ { 1.0f,-1.0f,-1.0f} },
+		{ { 1.0f, 1.0f,-1.0f} },
+		{ {-1.0f, 1.0f,-1.0f} },
 	};
-	GLuint lightIndicies[] =
+	GLuint lightIndices[] =
 	{
 		0, 1, 2,
 		0, 2, 3,
@@ -58,45 +52,36 @@ int main()
 		1, 4, 5,
 	};
 
-//	Creating & bind Shaders, VAO, VBO, EBO
+//	Creating array of textures
+	kde::Texture textures[] =
+	{
+		kde::Texture( "planks.png"	  , "diffuse" , 0, GL_RGBA ),
+		kde::Texture( "planksSpec.png", "specular", 1, GL_RED ),
+	};
+	
+//	Creating & bind shaders, vao, vbo, ebo for light source
 	kde::Shader pyramidShader("default", "default");
 	
-	kde::VAO vao1;
-	vao1.Bind();
+	std::vector<Vertex> verts(vertices, vertices + sizeof(vertices) / sizeof(Vertex));
+	std::vector<GLuint> ind(indices, indices + sizeof(indices) / sizeof(GLuint));
+	std::vector<kde::Texture> tex(textures, textures + sizeof(textures) / sizeof(kde::Texture));
 
-	kde::VBO vbo1(verts, sizeof(verts));
-	kde::EBO ebo1(indicies, sizeof(indicies));
-	
-	vao1.LinkAttrib( vbo1, 0, 3, GL_FLOAT, 8 * sizeof(float), (void*)0 );
-	vao1.LinkAttrib( vbo1, 1, 2, GL_FLOAT, 8 * sizeof(float), (void*)(3 * sizeof(float)) );
-	vao1.LinkAttrib( vbo1, 2, 3, GL_FLOAT, 8 * sizeof(float), (void*)(5 * sizeof(float)) );
-
-	vao1.Unbind();
-	vbo1.Unbind();
-	ebo1.Unbind();
-
-//	Creating & bind shaders, vao, vbo, ebo for light source
 	kde::Shader lightShader("light", "light");
-	
-	kde::VAO lightVAO;
-	lightVAO.Bind();
 
-	kde::VBO lightVBO(lightVerts, sizeof(lightVerts));
-	kde::EBO lightEBO(lightIndicies, sizeof(lightIndicies));
+	std::vector<Vertex> lightVerts(lightVertices, lightVertices + sizeof(lightVertices) / sizeof(Vertex));
+	std::vector<GLuint> lightInd(lightIndices, lightIndices + sizeof(lightIndices) / sizeof(GLuint));
 
-	lightVAO.LinkAttrib( lightVBO, 0, 3, GL_FLOAT, 3 * sizeof(float), (void*)0 );
-
-	lightVAO.Unbind();
-	lightVBO.Unbind();
-	lightEBO.Unbind();
+	kde::Mesh floor(verts, ind, tex);
+	kde::Mesh light(lightVerts, lightInd, tex);
 
 	glm::vec3 lightPos = glm::vec3(0.0f, 0.2f, -0.2f);
 	glm::vec3 lightScale = glm::vec3(0.05f, 0.05f, 0.05f);
 	glm::mat4 lightModel = glm::mat4(1.0f);
+
 	lightModel = glm::translate(lightModel, lightPos);
 	lightModel = glm::scale(lightModel, lightScale);
-	
-	glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+
+	glm::vec4 lightColor = glm::vec4(2.0f, 2.0f, 2.0f, 1.0f);
 
 	glm::vec3 pyramidPos = glm::vec3(0.0f, 0.0f, 0.0f);
 	glm::vec3 pyramidScale = glm::vec3(0.75f, 0.75f, 0.75f);
@@ -112,14 +97,6 @@ int main()
 	glUniform4f(glGetUniformLocation(pyramidShader.mProgram, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
 	glUniform3f(glGetUniformLocation(pyramidShader.mProgram, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
 
-//	Texture init
-	kde::Texture tex0( "planks.png", GL_TEXTURE_2D, 0, GL_RGBA );
-	tex0.texUnit(pyramidShader, "tex0", 0);
-	kde::Texture tex1( "planksSpec.png", GL_TEXTURE_2D, 1, GL_RED );
-	tex0.texUnit(pyramidShader, "tex1", 1);
-	
-	tex0.Unbind();
-
 //	Enable depth test
 	glEnable(GL_DEPTH_TEST);
 
@@ -131,32 +108,18 @@ int main()
 	{
 		glClearColor(0.2f, 0.3f, 0.8f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		cam.UpdateMatrix(65.0f, 0.05f, 100.f);
-
-		pyramidShader.Use();
-		glUniform3f(glGetUniformLocation(pyramidShader.mProgram, "camPos"), cam.position.x, cam.position.y, cam.position.z);
-
-		cam.Matrix(pyramidShader, "camMatrix");
+		cam.UpdateMatrix(65.0f, 0.1f, 100.f);
 		cam.Input(window.getWindowInst(), 0.000001f);
-		tex0.Bind();
-		tex1.Bind();
-		vao1.Bind();
-		glDrawElements(GL_TRIANGLES, sizeof(indicies)/sizeof(int), GL_UNSIGNED_INT, 0);
 
-		lightShader.Use();
-		cam.Matrix(lightShader, "camMatrix");
-		lightVAO.Bind();
-		glDrawElements(GL_TRIANGLES, sizeof(lightIndicies)/sizeof(int), GL_UNSIGNED_INT, 0);
+		light.Draw(lightShader, cam);
+		floor.Draw(pyramidShader, cam);
 
 		glfwSwapBuffers(window.getWindowInst());
 		glfwPollEvents();
 	}
 	
 //	Delete everything in the end of project
-	vao1.Delete();
-	vbo1.Delete();
-	ebo1.Delete();
-	tex0.Delete();
+	lightShader.Delete();
 	pyramidShader.Delete();
 
 	return 0;

@@ -1,5 +1,15 @@
 #pragma once
 #include <glad/glad.h>
+#include <glm/glm.hpp>
+#include <vector>
+
+struct Vertex
+{
+	glm::vec3 position;
+	glm::vec3 color;
+	glm::vec3 normal;
+	glm::vec2 texUV;
+};
 
 namespace kde
 {
@@ -9,13 +19,7 @@ namespace kde
 		GLuint id;
 
 	public:
-		template<typename T>
-		VBO(T* verticies, GLsizeiptr size)
-		{
-			glGenBuffers(1, &id);
-			glBindBuffer(GL_ARRAY_BUFFER, id);
-			glBufferData(GL_ARRAY_BUFFER, size, verticies, GL_STATIC_DRAW);
-		}
+		VBO(std::vector<Vertex>& vertices);
 		~VBO() = default;
 
 		void Bind();

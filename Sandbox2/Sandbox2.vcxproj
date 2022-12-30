@@ -161,6 +161,7 @@
     <ClCompile Include="src\KDE\FrameTimer.cpp" />
     <ClCompile Include="src\KDE\GL\GLFW.cpp" />
     <ClCompile Include="src\KDE\GL\Window.cpp" />
+    <ClCompile Include="src\KDE\Mesh.cpp" />
     <ClCompile Include="src\KDE\Texture.cpp" />
     <ClCompile Include="src\KDE\VAO.cpp" />
     <ClCompile Include="src\KDE\VBO.cpp" />
@@ -183,6 +184,7 @@
     <ClInclude Include="src\KDE\GL\GLstd.h" />
     <ClInclude Include="src\KDE\GL\Window.h" />
     <ClInclude Include="src\KDE\KDstd.h" />
+    <ClInclude Include="src\KDE\Mesh.h" />
     <ClInclude Include="src\KDE\Shader.h" />
     <ClInclude Include="src\KDE\Texture.h" />
     <ClInclude Include="src\KDE\VAO.h" />

@@ -1,5 +1,6 @@
 #pragma once
 #include <glad/glad.h>
+#include <vector>
 
 namespace kde
 {
@@ -9,7 +10,7 @@ namespace kde
 		GLuint id;
 
 	public:
-		EBO(GLuint* indicies, GLsizeiptr size);
+		EBO(std::vector<GLuint>& indices);
 		~EBO() = default;
 
 		void Bind();
