@@ -3,11 +3,11 @@
 namespace kde
 {
 	Mesh::Mesh(std::vector <Vertex>& vertices, std::vector <GLuint>& indices, std::vector <Texture>& textures)
+		:
+		vertices(vertices),
+		indices(indices),
+		textures(textures)
 	{
-		Mesh::vertices = vertices;
-		Mesh::indices = indices;
-		Mesh::textures = textures;
-
 		vao.Bind();
 		// Generates Vertex Buffer Object and links it to vertices
 		VBO vbo(vertices);

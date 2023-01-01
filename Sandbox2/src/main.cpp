@@ -1,6 +1,7 @@
 #include <iostream>
 #include "KDE/KDstd.h"
 #include "KDE/GL/GLstd.h"
+#include "KDE/Model.h"
 
 const unsigned constexpr int WIDTH = 800;
 const unsigned constexpr int HEIGHT = 800;
@@ -23,7 +24,6 @@ int main()
 		0, 1, 2,
 		0, 2, 3
 	};
-
 //	Creating arrays of vertices & indicies of light source cube
 	Vertex lightVertices[] =
 	{//			|   COORDINATES   |
@@ -60,13 +60,13 @@ int main()
 	};
 	
 //	Creating & bind shaders, vao, vbo, ebo for light source
-	kde::Shader pyramidShader("default", "default");
+	kde::Shader pyramidShader("default.vert", "default.frag");
 	
 	std::vector<Vertex> verts(vertices, vertices + sizeof(vertices) / sizeof(Vertex));
 	std::vector<GLuint> ind(indices, indices + sizeof(indices) / sizeof(GLuint));
 	std::vector<kde::Texture> tex(textures, textures + sizeof(textures) / sizeof(kde::Texture));
 
-	kde::Shader lightShader("light", "light");
+	kde::Shader lightShader("light.vert", "light.frag");
 
 	std::vector<Vertex> lightVerts(lightVertices, lightVertices + sizeof(lightVertices) / sizeof(Vertex));
 	std::vector<GLuint> lightInd(lightIndices, lightIndices + sizeof(lightIndices) / sizeof(GLuint));
@@ -74,20 +74,23 @@ int main()
 	kde::Mesh floor(verts, ind, tex);
 	kde::Mesh light(lightVerts, lightInd, tex);
 
-	glm::vec3 lightPos = glm::vec3(0.0f, 0.2f, -0.2f);
+	glm::vec3 lightPos = glm::vec3(0.0f, 0.2f, 0.5f);
 	glm::vec3 lightScale = glm::vec3(0.05f, 0.05f, 0.05f);
 	glm::mat4 lightModel = glm::mat4(1.0f);
 
 	lightModel = glm::translate(lightModel, lightPos);
 	lightModel = glm::scale(lightModel, lightScale);
 
-	glm::vec4 lightColor = glm::vec4(2.0f, 2.0f, 2.0f, 1.0f);
+	glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 
 	glm::vec3 pyramidPos = glm::vec3(0.0f, 0.0f, 0.0f);
 	glm::vec3 pyramidScale = glm::vec3(0.75f, 0.75f, 0.75f);
 	glm::mat4 pyramidModel = glm::mat4(1.0f);
 	pyramidModel = glm::translate(pyramidModel, pyramidPos);
 	pyramidModel = glm::scale(pyramidModel, pyramidScale);
+
+	kde::Model nanosuit;
+	nanosuit.LoadMesh( "nanosuit", 0.25f );
 
 	lightShader.Use();
 	glUniformMatrix4fv(glGetUniformLocation(lightShader.mProgram, "model"), 1, GL_FALSE, glm::value_ptr(lightModel));
@@ -112,7 +115,7 @@ int main()
 		cam.Input(window.getWindowInst(), 0.000001f);
 
 		light.Draw(lightShader, cam);
-		floor.Draw(pyramidShader, cam);
+		nanosuit.Draw(pyramidShader, cam, lightPos, lightColor);
 
 		glfwSwapBuffers(window.getWindowInst());
 		glfwPollEvents();

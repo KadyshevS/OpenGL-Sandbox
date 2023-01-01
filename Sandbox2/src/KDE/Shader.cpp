@@ -43,8 +43,8 @@ namespace kde
 	Shader::Shader(const std::string& vertexShader, const std::string& fragmentShader)
 	{
 	//	Getting shaders source
-		std::string vs_src = GetFileSource( "res/shaders/" + vertexShader + ".vert" );
-		std::string fs_src = GetFileSource( "res/shaders/" + fragmentShader + ".frag" );
+		std::string vs_src = GetFileSource( "res/shaders/" + vertexShader );
+		std::string fs_src = GetFileSource( "res/shaders/" + fragmentShader );
 
 	//	Creating & binding shaders
 		GLuint vs = CompileShader(GL_VERTEX_SHADER, vs_src);
