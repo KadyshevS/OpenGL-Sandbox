@@ -9,28 +9,33 @@ namespace kde
 		textures(textures)
 	{
 		vao.Bind();
-		// Generates Vertex Buffer Object and links it to vertices
+
 		VBO vbo(vertices);
-		// Generates Element Buffer Object and links it to indices
 		EBO ebo(indices);
-		// Links VBO attributes such as coordinates and colors to VAO
+
 		vao.LinkAttrib(vbo, 0, 3, GL_FLOAT, sizeof(Vertex), (void*)0);
 		vao.LinkAttrib(vbo, 1, 3, GL_FLOAT, sizeof(Vertex), (void*)(3 * sizeof(float)));
 		vao.LinkAttrib(vbo, 2, 3, GL_FLOAT, sizeof(Vertex), (void*)(6 * sizeof(float)));
 		vao.LinkAttrib(vbo, 3, 2, GL_FLOAT, sizeof(Vertex), (void*)(9 * sizeof(float)));
-		// Unbind all to prevent accidentally modifying them
+
 		vao.Unbind();
 		vbo.Unbind();
 		ebo.Unbind();
 	}
 
-	void Mesh::Draw(Shader& shader, Camera& camera)
+	void Mesh::Draw(Shader& shader, Camera& camera, glm::vec3& lightPos, glm::vec4& lightColor)
 	{
-		// Bind shader to be able to access uniforms
+		glm::mat4 modelMat(1.0f);
+		modelMat = glm::translate(modelMat, this->position);
+		modelMat = glm::scale(modelMat, this->scale);
+		
 		shader.Use();
+		glUniformMatrix4fv(glGetUniformLocation(shader.mProgram, "model"), 1, GL_FALSE, glm::value_ptr(modelMat));
+		glUniform4f(glGetUniformLocation(shader.mProgram, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
+		glUniform3f(glGetUniformLocation(shader.mProgram, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
+
 		vao.Bind();
 
-		// Keep track of how many of each type of textures we have
 		unsigned int numDiffuse = 0;
 		unsigned int numSpecular = 0;
 
@@ -49,11 +54,26 @@ namespace kde
 			textures[i].texUnit(shader, (type + num).c_str(), i);
 			textures[i].Bind();
 		}
-		// Take care of the camera Matrix
+
 		glUniform3f(glGetUniformLocation(shader.mProgram, "camPos"), camera.position.x, camera.position.y, camera.position.z);
 		camera.Matrix(shader, "camMatrix");
 
-		// Draw the actual mesh
 		glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+	}
+	std::vector<Vertex> Mesh::getVertices() const
+	{
+		return vertices;
+	}
+	std::vector<unsigned int> Mesh::getIndices() const
+	{
+		return indices;
+	}
+	void Mesh::setPosition(const glm::vec3& translation)
+	{
+		position = translation;
+	}
+	void Mesh::setScale(const glm::vec3& scaling)
+	{
+		scale = scaling;
 	}
 }

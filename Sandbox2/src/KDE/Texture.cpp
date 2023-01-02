@@ -16,7 +16,6 @@ namespace kde
 		glActiveTexture(slot);
 		unit = slot;
 		glBindTexture(GL_TEXTURE_2D, id);
-
 		// Configures the type of algorithm that is used to make the image smaller or bigger
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -40,7 +39,7 @@ namespace kde
 		// Unbinds the OpenGL Texture object so that it can't accidentally be modified
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
-
+	
 	void Texture::texUnit(kde::Shader& shader, const char* uniform, GLuint unit)
 	{
 	//	Bind texture sampler

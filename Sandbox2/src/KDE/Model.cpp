@@ -3,23 +3,21 @@
 
 namespace kde
 {
-	Model::Model()
+	Model::Model(const std::string& fileName, const float scale)
 	{
-	}
-	Model::~Model()
-	{
+		LoadMesh(fileName, scale);
 	}
 
 	bool Model::LoadMesh(const std::string& fileName, const float scale)
 	{
 		try
 		{
-			std::string filePath = "res\\models\\suzanne.obj";
+			std::string filePath = "res\\models\\" + fileName + "\\" + fileName + ".obj";
 
 			Assimp::Importer imp;
 			const auto pModel = imp.ReadFile(filePath, aiProcess_Triangulate | aiProcess_JoinIdenticalVertices);
 			const auto pMesh = pModel->mMeshes[0];
-
+			
 			vertices.reserve(pMesh->mNumVertices);
 			for (unsigned int i = 0; i < pMesh->mNumVertices; i++)
 			{
@@ -64,34 +62,38 @@ namespace kde
 		
 		return true;
 	}
-	void Model::Draw(Shader& shader, Camera& camera)
+	void Model::Draw(Shader& shader, Camera& camera, glm::vec3& lightPos, glm::vec3& lightColor)
 	{
-		// Bind shader to be able to access uniforms
-		shader.Use();
-		vao.Bind();
-
-		// Take care of the camera Matrix
-		glUniform3f(glGetUniformLocation(shader.mProgram, "camPos"), camera.position.x, camera.position.y, camera.position.z);
-		camera.Matrix(shader, "camMatrix");
-
-		// Draw the actual mesh
-		glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
-	}
-	void Model::Draw(Shader& shader, Camera& camera, glm::vec3& lightPos, glm::vec4& lightColor)
-	{
-		// Bind shader to be able to access uniforms
+		glm::mat4 modelMat(1.0f);
+		modelMat = glm::translate(modelMat, this->position);
+		modelMat = glm::scale(modelMat, this->scale);
 		shader.Use();
 		glUniformMatrix4fv(glGetUniformLocation(shader.mProgram, "model"), 1, GL_FALSE, glm::value_ptr(modelMat));
-		glUniform4f(glGetUniformLocation(shader.mProgram, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
+		glUniform4f(glGetUniformLocation(shader.mProgram, "lightColor"), lightColor.x, lightColor.y, lightColor.z, 1.0f);
 		glUniform3f(glGetUniformLocation(shader.mProgram, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
 
 		vao.Bind();
 
-		// Take care of the camera Matrix
 		glUniform3f(glGetUniformLocation(shader.mProgram, "camPos"), camera.position.x, camera.position.y, camera.position.z);
 		camera.Matrix(shader, "camMatrix");
 
-		// Draw the actual mesh
 		glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+	}
+
+	std::vector<Vertex> Model::getVertices() const
+	{
+		return vertices;
+	}
+	std::vector<unsigned int> Model::getIndices() const
+	{
+		return indices;
+	}
+	void Model::setPosition(const glm::vec3& translation)
+	{
+		position = translation;
+	}
+	void Model::setScale(const glm::vec3& scaling)
+	{
+		scale = scaling;
 	}
 }

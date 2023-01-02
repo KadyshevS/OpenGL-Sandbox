@@ -15,6 +15,7 @@
     <ClCompile Include="src\KDE\GL\Window.cpp" />
     <ClCompile Include="src\KDE\Mesh.cpp" />
     <ClCompile Include="src\KDE\Model.cpp" />
+    <ClCompile Include="src\KDE\PointLight.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\default.vert" />
@@ -37,6 +38,9 @@
     <ClInclude Include="src\KDE\GL\Window.h" />
     <ClInclude Include="src\KDE\Mesh.h" />
     <ClInclude Include="src\KDE\Model.h" />
+    <ClInclude Include="src\KDE\shapes\Cube.h" />
+    <ClInclude Include="src\KDE\shapes\Plane.h" />
+    <ClInclude Include="src\KDE\PointLight.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\textures\kot.jpg" />
