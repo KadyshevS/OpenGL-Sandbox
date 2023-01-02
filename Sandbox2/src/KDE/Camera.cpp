@@ -15,7 +15,7 @@ namespace kde
 		glm::mat4 proj(1.0f);
 
 		view = glm::lookAt(position, position + orientation, up);
-		proj = glm::perspective(glm::radians(FOVdeg), (float)(width / height), nearPlane, farPlane);
+		proj = glm::perspectiveFov(FOVdeg, (float)width, (float)height, nearPlane, farPlane);
 
 		cameraMatrix = proj * view;
 	}
@@ -82,6 +82,10 @@ namespace kde
 			// Makes sure the next time the camera looks around it doesn't jump
 			firstPress = true;
 		}
+	}
+	bool Camera::isMouseCaptured() const
+	{
+		return capture_mouse;
 	}
 	void Camera::FreeLook(GLFWwindow* window, const float dt)
 	{

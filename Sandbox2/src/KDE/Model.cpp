@@ -34,7 +34,7 @@ namespace kde
 			for (unsigned int i = 0; i < pMesh->mNumFaces; i++)
 			{
 				const auto& face = pMesh->mFaces[i];
-				assert(face.mNumIndices == 3 && "Face of model is not a trinagle.");
+				assert(face.mNumIndices == 3 && "Face of model is not a triangle.");
 				indices.push_back(face.mIndices[0]);
 				indices.push_back(face.mIndices[1]);
 				indices.push_back(face.mIndices[2]);
@@ -62,15 +62,15 @@ namespace kde
 		
 		return true;
 	}
-	void Model::Draw(Shader& shader, Camera& camera, glm::vec3& lightPos, glm::vec3& lightColor)
+	void Model::Draw(Shader& shader, Camera& camera, PointLight& light)
 	{
 		glm::mat4 modelMat(1.0f);
 		modelMat = glm::translate(modelMat, this->position);
 		modelMat = glm::scale(modelMat, this->scale);
 		shader.Use();
 		glUniformMatrix4fv(glGetUniformLocation(shader.mProgram, "model"), 1, GL_FALSE, glm::value_ptr(modelMat));
-		glUniform4f(glGetUniformLocation(shader.mProgram, "lightColor"), lightColor.x, lightColor.y, lightColor.z, 1.0f);
-		glUniform3f(glGetUniformLocation(shader.mProgram, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
+		glUniform4f(glGetUniformLocation(shader.mProgram, "lightColor"), light.color.x, light.color.y, light.color.z, 1.0f);
+		glUniform3f(glGetUniformLocation(shader.mProgram, "lightPos"), light.position.x, light.position.y, light.position.z);
 
 		vao.Bind();
 

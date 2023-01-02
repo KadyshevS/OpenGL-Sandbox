@@ -6,6 +6,7 @@
 #include <assimp/postprocess.h>
 #include "Shader.h"
 #include "Camera.h"
+#include "PointLight.h"
 
 namespace kde
 {
@@ -26,7 +27,7 @@ namespace kde
 		~Model() = default;
 
 		bool LoadMesh(const std::string& fileName, const float scale = 1.0f);
-		void Draw(Shader& shader, Camera& camera, glm::vec3& lightPos, glm::vec3& lightColor);
+		void Draw(Shader& shader, Camera& camera, PointLight& light);
 
 		std::vector<Vertex> getVertices() const;
 		std::vector<unsigned int> getIndices() const;

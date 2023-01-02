@@ -60,6 +60,10 @@ namespace kde
 		glDeleteShader(vs);
 		glDeleteShader(fs);
 	}
+	Shader::~Shader()
+	{
+		Delete();
+	}
 
 	void Shader::Use()
 	{

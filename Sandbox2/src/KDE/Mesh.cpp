@@ -35,7 +35,7 @@ namespace kde
 		glUniform3f(glGetUniformLocation(shader.mProgram, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
 
 		vao.Bind();
-
+		
 		unsigned int numDiffuse = 0;
 		unsigned int numSpecular = 0;
 

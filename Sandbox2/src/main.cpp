@@ -1,12 +1,9 @@
 #include <iostream>
 #include "KDE/KDstd.h"
 #include "KDE/GL/GLstd.h"
-#include "KDE/Model.h"
-#include "KDE/shapes/Cube.h"
-#include "KDE/PointLight.h"
 
-const unsigned constexpr int WIDTH = 800;
-const unsigned constexpr int HEIGHT = 800;
+const unsigned constexpr int WIDTH = 1280;
+const unsigned constexpr int HEIGHT = 720;
 
 int main()
 {
@@ -42,24 +39,34 @@ int main()
 //	Creating camera obj
 	kde::Camera cam(WIDTH, HEIGHT, { 0.0f, 0.0f, 2.0f });
 
+//	Initializing ImGui
+	kde::ImguiManager imgui(window.getWindowInst());
+
 //	Main loop
 	while ( !glfwWindowShouldClose(window.getWindowInst()) )
 	{
 		glClearColor(0.2f, 0.3f, 0.8f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		cam.UpdateMatrix(65.0f, 0.1f, 100.f);
-		cam.Input(window.getWindowInst(), 0.000001f);
+		imgui.Update();
+		
+		cam.UpdateMatrix(45.0f, 0.1f, 100.f);
+
+		if (!imgui.WantCaptureMouse())
+		{
+			cam.Input(window.getWindowInst(), 0.000001f);
+		}
 
 		light.Draw(cam);
-		suzanne.Draw(modelShader, cam, light.position, light.color);
+		suzanne.Draw(modelShader, cam, light);
 
+		ImGui::Begin("Hello ImGui!");
+		ImGui::Text("ImGui initialized successfully");
+		ImGui::End();
+
+		imgui.Render();
 		glfwSwapBuffers(window.getWindowInst());
 		glfwPollEvents();
 	}
-	
-//	Delete everything in the end of project
-	lightShader.Delete();
-	modelShader.Delete();
 
 	return 0;
 }

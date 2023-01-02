@@ -1,5 +1,6 @@
 #pragma once
 
+#include "KDE/ImguiManager.h"
 #include "KDE/gl.h"
 #include "Shader.h"
 #include "VAO.h"
@@ -11,3 +12,6 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "Camera.h"
 #include "Mesh.h"
+#include "KDE/Model.h"
+#include "KDE/shapes/Cube.h"
+#include "KDE/PointLight.h"

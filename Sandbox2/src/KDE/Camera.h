@@ -38,5 +38,7 @@ namespace kde
 		void UpdateMatrix(float FOVdeg, float nearPlane, float farPlane);
 		void Matrix(kde::Shader& shader, const char* uniform);
 		void Input(GLFWwindow* window, const float dt);
+
+		bool isMouseCaptured() const;
 	};
 }
