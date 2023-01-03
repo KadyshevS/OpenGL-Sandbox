@@ -30,6 +30,12 @@ namespace GL
 		return win;
 	}
 
+	void Window::AdjustViewport()
+	{
+		int curr_width, curr_height;
+		glfwGetWindowSize(getWindowInst(), &curr_width, &curr_height);
+		glViewport(0, 0, curr_width, curr_height);
+	}
 	void Window::SetContextCurrent()
 	{
 		//	Set Current context

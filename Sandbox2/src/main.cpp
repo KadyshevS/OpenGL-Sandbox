@@ -28,7 +28,7 @@ int main()
 
 	std::vector<kde::Texture> tex(textures, textures + sizeof(textures) / sizeof(kde::Texture));
 
-	kde::Model suzanne("suzanne", 0.25f);
+	kde::Model suzanne("nanosuit", 2.0f);
 
 	kde::PointLight light;
 	light.position = { 0.0f, 0.2f, 0.5f };
@@ -47,22 +47,22 @@ int main()
 	{
 		glClearColor(0.2f, 0.3f, 0.8f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		window.AdjustViewport();
 		imgui.Update();
 		
 		cam.UpdateMatrix(45.0f, 0.1f, 100.f);
 
 		if (!imgui.WantCaptureMouse())
 		{
-			cam.Input(window.getWindowInst(), 0.000001f);
+			cam.Input(window.getWindowInst(), imgui.getSensDeltaTime());
 		}
 
 		light.Draw(cam);
 		suzanne.Draw(modelShader, cam, light);
 
-		ImGui::Begin("Hello ImGui!");
-		ImGui::Text("ImGui initialized successfully");
-		ImGui::End();
-
+		imgui.ShowStatistics();
+		suzanne.DrawSettings();
+		light.DrawSettings();
 		imgui.Render();
 		glfwSwapBuffers(window.getWindowInst());
 		glfwPollEvents();

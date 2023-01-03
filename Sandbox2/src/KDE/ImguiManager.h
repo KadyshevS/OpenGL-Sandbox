@@ -17,7 +17,13 @@ namespace kde
 		void Update();
 		void Render();
 
+		void ShowStatistics();
+
 		bool WantCaptureMouse() const;
+
+		int getFramerate() const;
+		float getDeltaTime() const;
+		float getSensDeltaTime() const;
 
 		ImGuiIO* getIO() const;
 	};

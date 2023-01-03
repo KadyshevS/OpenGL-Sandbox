@@ -4,6 +4,8 @@
 namespace kde
 {
 	Model::Model(const std::string& fileName, const float scale)
+		:
+		fileName(fileName)
 	{
 		LoadMesh(fileName, scale);
 	}
@@ -18,13 +20,15 @@ namespace kde
 			const auto pModel = imp.ReadFile(filePath, aiProcess_Triangulate | aiProcess_JoinIdenticalVertices);
 			const auto pMesh = pModel->mMeshes[0];
 			
+			pModel->mMeshes[0]->mName;
+
 			vertices.reserve(pMesh->mNumVertices);
 			for (unsigned int i = 0; i < pMesh->mNumVertices; i++)
 			{
 				vertices.push_back( 
 					{
 						glm::vec3(pMesh->mVertices[i].x*scale, pMesh->mVertices[i].y*scale, pMesh->mVertices[i].z*scale),
-						glm::vec3(0.0f, 1.0f, 0.0f),
+						glm::vec3(1.0f, 1.0f, 1.0f),
 						glm::vec3(pMesh->mNormals[i].x, pMesh->mNormals[i].y, pMesh->mNormals[i].z)
 					}
 				);
@@ -65,8 +69,16 @@ namespace kde
 	void Model::Draw(Shader& shader, Camera& camera, PointLight& light)
 	{
 		glm::mat4 modelMat(1.0f);
-		modelMat = glm::translate(modelMat, this->position);
-		modelMat = glm::scale(modelMat, this->scale);
+		
+		auto t = glm::translate(glm::mat4(1.0f), position);
+		auto s = glm::scale(glm::mat4(1.0f), scale);
+		auto r = 
+			glm::rotate(glm::mat4(1.0f), glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f)) *
+			glm::rotate(glm::mat4(1.0f), glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f)) *
+			glm::rotate(glm::mat4(1.0f), glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
+
+		modelMat = t * r * s;
+		
 		shader.Use();
 		glUniformMatrix4fv(glGetUniformLocation(shader.mProgram, "model"), 1, GL_FALSE, glm::value_ptr(modelMat));
 		glUniform4f(glGetUniformLocation(shader.mProgram, "lightColor"), light.color.x, light.color.y, light.color.z, 1.0f);
@@ -95,5 +107,31 @@ namespace kde
 	void Model::setScale(const glm::vec3& scaling)
 	{
 		scale = scaling;
+	}
+	void Model::DrawSettings()
+	{
+		if( ImGui::Begin(fileName.c_str()) )
+		{
+			ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.0f, 1.0f), "Position");
+			ImGui::SliderFloat("X", &position.x, -1.0f, 1.0f, "%.1f");
+			ImGui::SliderFloat("Y", &position.y, -1.0f, 1.0f, "%.1f");
+			ImGui::SliderFloat("Z", &position.z, -1.0f, 1.0f, "%.1f");
+			ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.0f, 1.0f), "Scale");
+			ImGui::SliderFloat("X ", &scale.x, 0.5f, 3.0f, "%.1f");
+			ImGui::SliderFloat("Y ", &scale.y, 0.5f, 3.0f, "%.1f");
+			ImGui::SliderFloat("Z ", &scale.z, 0.5f, 3.0f, "%.1f");
+			ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.0f, 1.0f), "Rotation");
+			ImGui::SliderFloat("X  ", &rotation.x, -180.0f, 180.0f);
+			ImGui::SliderFloat("Y  ", &rotation.y, -180.0f, 180.0f);
+			ImGui::SliderFloat("Z  ", &rotation.z, -180.0f, 180.0f);
+			
+			if ( ImGui::Button("Clear") )
+			{
+				position = { 0.0f, 0.0f, 0.0f };
+				scale = { 1.0f, 1.0f, 1.0f };
+				rotation = { 0.0f, 0.0f, 0.0f };
+			}
+		}
+		ImGui::End();
 	}
 }

@@ -74,7 +74,7 @@ namespace kde
 			esc_pressed_once = false;
 		}
 
-		if (capture_mouse) FreeLook(window, dt);
+		if (capture_mouse) FreeLook(window, dt * 0xAFFFFF);
 		else
 		{
 			// Unhides cursor since camera is not looking around anymore
@@ -103,8 +103,8 @@ namespace kde
 
 		// Normalizes and shifts the coordinates of the cursor such that they begin in the middle of the screen
 		// and then "transforms" them into degrees 
-		float rotX = sensetivity * (float)(mouseY - (height / 2)) / height;
-		float rotY = sensetivity * (float)(mouseX - (width / 2)) / width;
+		float rotX = sensetivity * dt * (float)(mouseY - (height / 2)) / height;
+		float rotY = sensetivity * dt * (float)(mouseX - (width / 2)) / width;
 
 		// Calculates upcoming vertical change in the Orientation
 		glm::vec3 newOrientation = glm::rotate(orientation, glm::radians(-rotX), glm::normalize(glm::cross(orientation, up)));

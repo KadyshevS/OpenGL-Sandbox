@@ -30,7 +30,7 @@ namespace kde
 
 		int width, height;
 		float speed = 255.0f;
-		float sensetivity = 100.0f;
+		float sensetivity = 1.5f;
 
 	public:
 		Camera(const int width, const int height, glm::vec3 position);

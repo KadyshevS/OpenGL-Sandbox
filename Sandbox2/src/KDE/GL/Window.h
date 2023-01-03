@@ -16,6 +16,7 @@ namespace GL
 
 		GLFWwindow* getWindowInst() const;
 
+		void AdjustViewport();
 		void SetContextCurrent();
 		void LoadGL();
 	};

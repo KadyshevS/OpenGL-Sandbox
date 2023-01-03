@@ -1,4 +1,5 @@
 #include "ImguiManager.h"
+#include <sstream>
 
 namespace kde
 {
@@ -24,6 +25,7 @@ namespace kde
 	{
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
+		
 		ImGui::NewFrame();
 	}
 	void ImguiManager::Render()
@@ -32,9 +34,31 @@ namespace kde
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 	}
 
+	void ImguiManager::ShowStatistics()
+	{
+		std::stringstream ss;
+		ss << "Framerate: " << getFramerate() << "\nDelta time: " << getDeltaTime();
+
+		ImGui::Begin("Statistics");
+		ImGui::Text( ss.str().c_str() );
+		ImGui::End();
+	}
+
 	bool ImguiManager::WantCaptureMouse() const
 	{
 		return io->WantCaptureMouse;
+	}
+	int ImguiManager::getFramerate() const
+	{
+		return io->Framerate;
+	}
+	float ImguiManager::getDeltaTime() const
+	{
+		return io->DeltaTime;
+	}
+	float ImguiManager::getSensDeltaTime() const
+	{
+		return io->DeltaTime * 0.01f;
 	}
 	ImGuiIO* ImguiManager::getIO() const
 	{

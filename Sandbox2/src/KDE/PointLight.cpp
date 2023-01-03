@@ -1,5 +1,6 @@
 #include "PointLight.h"
 #include "shapes/Cube.h"
+#include "ImguiManager.h"
 
 namespace kde
 {
@@ -27,8 +28,10 @@ namespace kde
 	{
 		glm::mat4 modelMat(1.0f);
 		
-		modelMat = glm::translate(modelMat, position);
-		modelMat = glm::scale(modelMat, scale);
+		auto t = glm::translate(glm::mat4(1.0f), position);
+		auto s = glm::scale(glm::mat4(1.0f), scale);
+
+		modelMat = t * s;
 
 		shader.Use();
 		glUniformMatrix4fv(glGetUniformLocation(shader.mProgram, "model"), 1, GL_FALSE, glm::value_ptr(modelMat));
@@ -40,5 +43,29 @@ namespace kde
 		camera.Matrix(shader, "camMatrix");
 
 		glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+	}
+	void PointLight::DrawSettings()
+	{
+		if ( ImGui::Begin("Point Light"))
+		{
+			ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.0f, 1.0f), "Position");
+			ImGui::SliderFloat("X", &position.x, -1.0f, 1.0f, "%.1f");
+			ImGui::SliderFloat("Y", &position.y, -1.0f, 1.0f, "%.1f");
+			ImGui::SliderFloat("Z", &position.z, -1.0f, 1.0f, "%.1f");
+			ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.0f, 1.0f), "Scale");
+			ImGui::SliderFloat("X ", &scale.x, 0.01f, 2.0f, "%.2f");
+			ImGui::SliderFloat("Y ", &scale.y, 0.01f, 2.0f, "%.2f");
+			ImGui::SliderFloat("Z ", &scale.z, 0.01f, 2.0f, "%.2f");
+			ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.0f, 1.0f), "Color");
+			ImGui::ColorEdit3("RGB", &color.r);
+
+			if ( ImGui::Button("Clear"))
+			{
+				position = { 0.0f, 0.2f, 0.5f };
+				scale = { 0.05f, 0.05f, 0.05f };
+				color = { 1.0f, 1.0f, 1.0f };
+			}
+		}
+		ImGui::End();
 	}
 }

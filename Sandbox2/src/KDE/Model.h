@@ -7,17 +7,21 @@
 #include "Shader.h"
 #include "Camera.h"
 #include "PointLight.h"
+#include "ImguiManager.h"
 
 namespace kde
 {
 	class Model
 	{
 	private:
+		std::string fileName;
+
 		std::vector<Vertex> vertices;
 		std::vector<unsigned int> indices;
 
 		glm::vec3 position = { 0.0f, 0.0f, 0.0f };
 		glm::vec3 scale = { 1.0f, 1.0f, 1.0f };
+		glm::vec3 rotation = { 0.0f, 0.0f, 0.0f };
 
 		VAO vao;
 
@@ -34,5 +38,7 @@ namespace kde
 
 		void setPosition(const glm::vec3& translation);
 		void setScale(const glm::vec3& scaling);
+
+		void DrawSettings();
 	};
 }
