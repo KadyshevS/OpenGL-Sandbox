@@ -23,6 +23,6 @@ namespace kde
 		~PointLight() = default;
 
 		void Draw(Camera& camera);
-		void DrawSettings();
+		void DrawWindow();
 	};
 }

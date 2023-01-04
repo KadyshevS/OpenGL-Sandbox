@@ -13,5 +13,6 @@
 #include "Camera.h"
 #include "Mesh.h"
 #include "KDE/Model.h"
-#include "KDE/shapes/Cube.h"
+#include "shapes/Cube.h"
+#include "shapes/Plank.h"
 #include "KDE/PointLight.h"

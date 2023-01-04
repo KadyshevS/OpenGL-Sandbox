@@ -44,7 +44,7 @@ namespace kde
 
 		glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 	}
-	void PointLight::DrawSettings()
+	void PointLight::DrawWindow()
 	{
 		if ( ImGui::Begin("Point Light"))
 		{

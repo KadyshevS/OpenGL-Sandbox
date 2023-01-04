@@ -47,7 +47,7 @@
     <ClInclude Include="src\KDE\Mesh.h" />
     <ClInclude Include="src\KDE\Model.h" />
     <ClInclude Include="src\KDE\shapes\Cube.h" />
-    <ClInclude Include="src\KDE\shapes\Plane.h" />
+    <ClInclude Include="src\KDE\shapes\Plank.h" />
     <ClInclude Include="src\KDE\PointLight.h" />
     <ClInclude Include="src\imgui\imconfig.h" />
     <ClInclude Include="src\imgui\imgui.h" />
@@ -65,5 +65,6 @@
     <Image Include="res\textures\brick.jpg" />
     <Image Include="res\textures\planks.png" />
     <Image Include="res\textures\planksSpec.png" />
+    <Image Include="res\textures\brick.png" />
   </ItemGroup>
 </Project>

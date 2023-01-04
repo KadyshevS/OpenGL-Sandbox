@@ -13,11 +13,12 @@ namespace kde
 
 	public:
 		GLuint id;
-		const char* type;
 		GLuint unit;
+		std::string type;
 
 	public:
-		Texture(const std::string& image, const char* texType, GLuint slot, GLenum format);
+		Texture() = default;
+		Texture(const std::string& image, const std::string& texType, GLenum format);
 
 		void texUnit(kde::Shader& shader, const char* uniform, GLuint unit);
 		void Bind();

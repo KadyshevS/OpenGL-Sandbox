@@ -15,20 +15,21 @@ int main()
 	std::vector<Vertex> lightVertices = Cube::vertices();
 	std::vector<GLuint> lightIndices = Cube::indices();
 
+	std::vector<Vertex> plankVerts = Plank::vertices();
+	std::vector<GLuint> plankInd = Plank::indices();
+
 //	Creating array of textures
-	kde::Texture textures[] =
+	std::vector<kde::Texture> tex =
 	{
-		kde::Texture( "planks.png"	  , "diffuse" , 0, GL_RGBA ),
-		kde::Texture( "planksSpec.png", "specular", 1, GL_RED ),
+		kde::Texture("res\\textures\\planks.png"	 , "diffuse" , GL_RGBA),
+		kde::Texture("res\\textures\\planksSpec.png", "specular", GL_RED),
 	};
 	
 //	Creating & bind shaders, vao, vbo, ebo for light source
 	kde::Shader modelShader("default.vert", "default.frag");
 	kde::Shader lightShader("light.vert", "light.frag");
 
-	std::vector<kde::Texture> tex(textures, textures + sizeof(textures) / sizeof(kde::Texture));
-
-	kde::Model suzanne("nanosuit", 2.0f);
+	kde::Model testModel("res\\models\\nanosuit\\nanosuit.obj", 0.1f);
 
 	kde::PointLight light;
 	light.position = { 0.0f, 0.2f, 0.5f };
@@ -58,11 +59,12 @@ int main()
 		}
 
 		light.Draw(cam);
-		suzanne.Draw(modelShader, cam, light);
+		testModel.Draw(modelShader, cam, light);
+
+		light.DrawWindow();
+		testModel.DrawWindow();
 
 		imgui.ShowStatistics();
-		suzanne.DrawSettings();
-		light.DrawSettings();
 		imgui.Render();
 		glfwSwapBuffers(window.getWindowInst());
 		glfwPollEvents();

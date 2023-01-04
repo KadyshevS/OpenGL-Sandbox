@@ -1,4 +1,5 @@
 #include "Model.h"
+#include "ImguiManager.h"
 #include <vector>
 
 namespace kde
@@ -14,51 +15,79 @@ namespace kde
 	{
 		try
 		{
-			std::string filePath = "res\\models\\" + fileName + "\\" + fileName + ".obj";
+		//	Test input file path
+			std::ifstream fileTest(fileName);
+			if (!fileTest.is_open()) throw std::runtime_error("");
 
+		//	Parse object by Assimp
 			Assimp::Importer imp;
-			const auto pModel = imp.ReadFile(filePath, aiProcess_Triangulate | aiProcess_JoinIdenticalVertices);
-			const auto pMesh = pModel->mMeshes[0];
+			const auto pModel = imp.ReadFile(fileName, aiProcess_Triangulate | aiProcess_JoinIdenticalVertices);
 			
-			pModel->mMeshes[0]->mName;
+		//	Clear meshes array if it's not
+			aiMeshes.clear();
+			aiMeshes.reserve(pModel->mNumMeshes);
 
-			vertices.reserve(pMesh->mNumVertices);
-			for (unsigned int i = 0; i < pMesh->mNumVertices; i++)
+			for (unsigned int i = 0; i < pModel->mNumMeshes; i++)
 			{
-				vertices.push_back( 
-					{
-						glm::vec3(pMesh->mVertices[i].x*scale, pMesh->mVertices[i].y*scale, pMesh->mVertices[i].z*scale),
-						glm::vec3(1.0f, 1.0f, 1.0f),
-						glm::vec3(pMesh->mNormals[i].x, pMesh->mNormals[i].y, pMesh->mNormals[i].z)
-					}
-				);
+			//	Getting current mesh
+				const auto& currMesh = pModel->mMeshes[i];
+				const auto& currMatIndex = currMesh->mMaterialIndex;
+				
+			//	Creating std::vector for each data type
+				std::vector<Vertex> currVerts;
+				std::vector<unsigned int> currIndices;
+				std::vector<kde::Texture> currTextures;
+
+				currIndices.reserve(currMesh->mNumFaces * 3);
+				for (unsigned int j = 0; j < currMesh->mNumFaces; j++)
+				{
+					const auto& face = currMesh->mFaces[j];
+					assert(face.mNumIndices == 3 && "Face of model is not a triangle.");
+					currIndices.push_back(face.mIndices[0]);
+					currIndices.push_back(face.mIndices[1]);
+					currIndices.push_back(face.mIndices[2]);
+				}
+
+				currVerts.reserve(currMesh->mNumVertices);
+				for (unsigned int j = 0; j < currMesh->mNumVertices; j++)
+				{
+					currVerts.emplace_back(
+							glm::vec3(currMesh->mVertices[j].x * scale, currMesh->mVertices[j].y * scale, currMesh->mVertices[j].z * scale),
+							glm::vec3(0.0f, 1.0f, 0.0f),
+							glm::vec3(currMesh->mNormals[j].x, currMesh->mNormals[j].y, currMesh->mNormals[j].z),
+							currMesh->HasTextureCoords(0) ? glm::vec2(currMesh->mTextureCoords[0][j].x, currMesh->mTextureCoords[0][j].y) : glm::vec2(0.0f, 0.0f)
+					);
+				}
+
+				currTextures.reserve(2);
+				auto material = pModel->mMaterials[currMesh->mMaterialIndex];
+				aiString materialName;
+				material->Get(AI_MATKEY_NAME, materialName);
+
+				int numDiffuse = material->GetTextureCount(aiTextureType_DIFFUSE);
+				int numSpecular = material->GetTextureCount(aiTextureType_SPECULAR);
+				aiString aiDiffuseName;
+				aiString aiSpecularName;
+				std::string diffuseName;
+				std::string specularName;
+
+				if (numDiffuse > 0)
+				{
+					material->Get(AI_MATKEY_TEXTURE(aiTextureType_DIFFUSE, 0), aiDiffuseName);
+					diffuseName = fileName.substr(0, fileName.find_last_of("\\")) + "\\" + aiDiffuseName.data;
+				}
+				if (numSpecular > 0)
+				{
+					material->Get(AI_MATKEY_TEXTURE(aiTextureType_SPECULAR, 0), aiSpecularName);
+					specularName = fileName.substr(0, fileName.find_last_of("\\")) + "\\" + aiSpecularName.data;
+				}
+				currTextures.emplace_back(diffuseName, "diffuse", GL_RGBA);
+				currTextures.emplace_back(diffuseName, "specular", GL_RGBA);
+
+				aiMeshes.emplace_back(currVerts, currIndices, currTextures, currMesh->mName.C_Str());
 			}
-			
-			indices.reserve(pMesh->mNumFaces * 3);
-			for (unsigned int i = 0; i < pMesh->mNumFaces; i++)
-			{
-				const auto& face = pMesh->mFaces[i];
-				assert(face.mNumIndices == 3 && "Face of model is not a triangle.");
-				indices.push_back(face.mIndices[0]);
-				indices.push_back(face.mIndices[1]);
-				indices.push_back(face.mIndices[2]);
-			}
-
-			vao.Bind();
-
-			kde::VBO vbo(vertices);
-			kde::EBO ebo(indices);
-
-			vao.LinkAttrib(vbo, 0, 3, GL_FLOAT, sizeof(Vertex), (void*)0);
-			vao.LinkAttrib(vbo, 1, 3, GL_FLOAT, sizeof(Vertex), (void*)(3 * sizeof(float)));
-			vao.LinkAttrib(vbo, 2, 3, GL_FLOAT, sizeof(Vertex), (void*)(6 * sizeof(float)));
-			vao.LinkAttrib(vbo, 3, 2, GL_FLOAT, sizeof(Vertex), (void*)(9 * sizeof(float)));
-
-			vao.Unbind();
-			vbo.Unbind();
-			ebo.Unbind();
 		}
-		catch (...)
+		catch (std::runtime_error e)
 		{
 			std::cout << "Failed to load model." << std::endl;
 			return false;
@@ -68,70 +97,17 @@ namespace kde
 	}
 	void Model::Draw(Shader& shader, Camera& camera, PointLight& light)
 	{
-		glm::mat4 modelMat(1.0f);
-		
-		auto t = glm::translate(glm::mat4(1.0f), position);
-		auto s = glm::scale(glm::mat4(1.0f), scale);
-		auto r = 
-			glm::rotate(glm::mat4(1.0f), glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f)) *
-			glm::rotate(glm::mat4(1.0f), glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f)) *
-			glm::rotate(glm::mat4(1.0f), glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
-
-		modelMat = t * r * s;
-		
-		shader.Use();
-		glUniformMatrix4fv(glGetUniformLocation(shader.mProgram, "model"), 1, GL_FALSE, glm::value_ptr(modelMat));
-		glUniform4f(glGetUniformLocation(shader.mProgram, "lightColor"), light.color.x, light.color.y, light.color.z, 1.0f);
-		glUniform3f(glGetUniformLocation(shader.mProgram, "lightPos"), light.position.x, light.position.y, light.position.z);
-
-		vao.Bind();
-
-		glUniform3f(glGetUniformLocation(shader.mProgram, "camPos"), camera.position.x, camera.position.y, camera.position.z);
-		camera.Matrix(shader, "camMatrix");
-
-		glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
-	}
-
-	std::vector<Vertex> Model::getVertices() const
-	{
-		return vertices;
-	}
-	std::vector<unsigned int> Model::getIndices() const
-	{
-		return indices;
-	}
-	void Model::setPosition(const glm::vec3& translation)
-	{
-		position = translation;
-	}
-	void Model::setScale(const glm::vec3& scaling)
-	{
-		scale = scaling;
-	}
-	void Model::DrawSettings()
-	{
-		if( ImGui::Begin(fileName.c_str()) )
+		for (auto& m : aiMeshes)
 		{
-			ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.0f, 1.0f), "Position");
-			ImGui::SliderFloat("X", &position.x, -1.0f, 1.0f, "%.1f");
-			ImGui::SliderFloat("Y", &position.y, -1.0f, 1.0f, "%.1f");
-			ImGui::SliderFloat("Z", &position.z, -1.0f, 1.0f, "%.1f");
-			ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.0f, 1.0f), "Scale");
-			ImGui::SliderFloat("X ", &scale.x, 0.5f, 3.0f, "%.1f");
-			ImGui::SliderFloat("Y ", &scale.y, 0.5f, 3.0f, "%.1f");
-			ImGui::SliderFloat("Z ", &scale.z, 0.5f, 3.0f, "%.1f");
-			ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.0f, 1.0f), "Rotation");
-			ImGui::SliderFloat("X  ", &rotation.x, -180.0f, 180.0f);
-			ImGui::SliderFloat("Y  ", &rotation.y, -180.0f, 180.0f);
-			ImGui::SliderFloat("Z  ", &rotation.z, -180.0f, 180.0f);
-			
-			if ( ImGui::Button("Clear") )
-			{
-				position = { 0.0f, 0.0f, 0.0f };
-				scale = { 1.0f, 1.0f, 1.0f };
-				rotation = { 0.0f, 0.0f, 0.0f };
-			}
+			m.Draw(shader, camera, light.position, light.color);
 		}
-		ImGui::End();
+	}
+
+	void Model::DrawWindow()
+	{
+		for (auto& m : aiMeshes)
+		{
+			m.DrawWindow();
+		}
 	}
 }

@@ -2,19 +2,30 @@
 
 namespace kde
 {
-	Texture::Texture(const std::string& image, const char* texType, GLuint slot, GLenum format)
+	Texture::Texture(const std::string& image, const std::string& texType, GLenum format)
 	{
 	//	Loading texture
 		type = texType;
-		const std::string imagePath = "res/textures/" + image;
 		stbi_set_flip_vertically_on_load(true);
-		unsigned char* bytes = stbi_load(imagePath.c_str(), &imgW, &imgH, &colNumCh, 0);
+		unsigned char* bytes = stbi_load(image.c_str(), &imgW, &imgH, &colNumCh, 0);
 
 		// Generates an OpenGL texture object
 		glGenTextures(1, &id);
 		// Assigns the texture to a Texture Unit
-		glActiveTexture(slot);
-		unit = slot;
+		if (texType == "diffuse")
+		{
+			unit = 0;
+		}
+		else if (texType == "specular")
+		{
+			unit = 1;
+		}
+		else
+		{
+			std::cout << "Failed to load texture(Wrong type)." << std::endl;
+		}
+		glActiveTexture(GL_TEXTURE0 + unit);
+		
 		glBindTexture(GL_TEXTURE_2D, id);
 		// Configures the type of algorithm that is used to make the image smaller or bigger
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
