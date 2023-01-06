@@ -36,7 +36,9 @@ namespace kde
 			glm::rotate(glm::mat4(1.0f), glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f)) *
 			glm::rotate(glm::mat4(1.0f), glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
 
-		modelMat = t * r * s;
+		
+
+		modelMat = s * r * t;
 		
 		shader.Use();
 		glUniformMatrix4fv(glGetUniformLocation(shader.mProgram, "model"), 1, GL_FALSE, glm::value_ptr(modelMat));
@@ -82,9 +84,9 @@ namespace kde
 		if (ImGui::Begin(meshName.c_str()))
 		{
 			ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.0f, 1.0f), "Position");
-			ImGui::SliderFloat("X", &position.x, -1.0f, 1.0f, "%.1f");
-			ImGui::SliderFloat("Y", &position.y, -1.0f, 1.0f, "%.1f");
-			ImGui::SliderFloat("Z", &position.z, -1.0f, 1.0f, "%.1f");
+			ImGui::SliderFloat("X", &position.x, -2.0f, 2.0f, "%.1f");
+			ImGui::SliderFloat("Y", &position.y, -2.0f, 2.0f, "%.1f");
+			ImGui::SliderFloat("Z", &position.z, -2.0f, 2.0f, "%.1f");
 			ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.0f, 1.0f), "Scale");
 			ImGui::SliderFloat("X ", &scale.x, 0.5f, 3.0f, "%.1f");
 			ImGui::SliderFloat("Y ", &scale.y, 0.5f, 3.0f, "%.1f");

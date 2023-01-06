@@ -182,8 +182,15 @@
   <ItemGroup>
     <None Include="res\shaders\default.frag" />
     <None Include="res\shaders\default.vert" />
+    <None Include="res\shaders\depthtest.frag" />
+    <None Include="res\shaders\directlight.frag" />
+    <None Include="res\shaders\directlight_spec.frag" />
     <None Include="res\shaders\light.frag" />
     <None Include="res\shaders\light.vert" />
+    <None Include="res\shaders\pointlight.frag" />
+    <None Include="res\shaders\pointlight_spec.frag" />
+    <None Include="res\shaders\spotlight.frag" />
+    <None Include="res\shaders\spotlight_spec.frag" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\imgui\imconfig.h" />
@@ -203,6 +210,7 @@
     <ClInclude Include="src\KDE\GL\GLstd.h" />
     <ClInclude Include="src\KDE\GL\Window.h" />
     <ClInclude Include="src\KDE\ImguiManager.h" />
+    <ClInclude Include="src\KDE\KDMath.h" />
     <ClInclude Include="src\KDE\KDstd.h" />
     <ClInclude Include="src\KDE\Mesh.h" />
     <ClInclude Include="src\KDE\Model.h" />

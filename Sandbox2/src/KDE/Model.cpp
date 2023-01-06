@@ -81,8 +81,15 @@ namespace kde
 					material->Get(AI_MATKEY_TEXTURE(aiTextureType_SPECULAR, 0), aiSpecularName);
 					specularName = fileName.substr(0, fileName.find_last_of("\\")) + "\\" + aiSpecularName.data;
 				}
-				currTextures.emplace_back(diffuseName, "diffuse", GL_RGBA);
-				currTextures.emplace_back(diffuseName, "specular", GL_RGBA);
+				
+				std::string fileType = diffuseName.substr( diffuseName.find_last_of("."), diffuseName.length() );
+
+				if(fileType == ".png")
+					currTextures.emplace_back(diffuseName, "diffuse", GL_RGBA);
+				else if(fileType == ".jpg")
+					currTextures.emplace_back(diffuseName, "diffuse", GL_RGB);
+
+				currTextures.emplace_back(specularName, "specular", GL_RED);
 
 				aiMeshes.emplace_back(currVerts, currIndices, currTextures, currMesh->mName.C_Str());
 			}

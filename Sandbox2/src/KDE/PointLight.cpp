@@ -49,9 +49,9 @@ namespace kde
 		if ( ImGui::Begin("Point Light"))
 		{
 			ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.0f, 1.0f), "Position");
-			ImGui::SliderFloat("X", &position.x, -1.0f, 1.0f, "%.1f");
-			ImGui::SliderFloat("Y", &position.y, -1.0f, 1.0f, "%.1f");
-			ImGui::SliderFloat("Z", &position.z, -1.0f, 1.0f, "%.1f");
+			ImGui::SliderFloat("X", &position.x, -3.0f, 3.0f, "%.1f");
+			ImGui::SliderFloat("Y", &position.y, -3.0f, 3.0f, "%.1f");
+			ImGui::SliderFloat("Z", &position.z, -3.0f, 3.0f, "%.1f");
 			ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.0f, 1.0f), "Scale");
 			ImGui::SliderFloat("X ", &scale.x, 0.01f, 2.0f, "%.2f");
 			ImGui::SliderFloat("Y ", &scale.y, 0.01f, 2.0f, "%.2f");

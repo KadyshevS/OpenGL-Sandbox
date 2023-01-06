@@ -26,16 +26,20 @@ int main()
 	};
 	
 //	Creating & bind shaders, vao, vbo, ebo for light source
-	kde::Shader modelShader("default.vert", "default.frag");
+	kde::Shader shaders[] =
+	{
+		kde::Shader("default.vert", "pointlight_spec.frag"),
+		kde::Shader("default.vert", "directlight_spec.frag"),
+		kde::Shader("default.vert", "spotlight_spec.frag"),
+		kde::Shader("default.vert", "depthtest.frag"),
+	};
 	kde::Shader lightShader("light.vert", "light.frag");
 
+	kde::Model testPlank("res\\models\\cobble_floor\\cobble_floor.obj", 0.1f);
 	kde::Model testModel("res\\models\\nanosuit\\nanosuit.obj", 0.1f);
 
 	kde::PointLight light;
 	light.position = { 0.0f, 0.2f, 0.5f };
-
-//	Enable depth test
-	glEnable(GL_DEPTH_TEST);
 
 //	Creating camera obj
 	kde::Camera cam(WIDTH, HEIGHT, { 0.0f, 0.0f, 2.0f });
@@ -44,6 +48,13 @@ int main()
 	kde::ImguiManager imgui(window.getWindowInst());
 
 //	Main loop
+	int currShaderFile = 0;
+	const char* shadersFiles[] = { "Point Light", "Directional Light", "Spot Light", "Depth Buffer" };
+
+//	Enable depth test
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LESS);
+	
 	while ( !glfwWindowShouldClose(window.getWindowInst()) )
 	{
 		glClearColor(0.2f, 0.3f, 0.8f, 1.0f);
@@ -52,14 +63,19 @@ int main()
 		imgui.Update();
 		
 		cam.UpdateMatrix(45.0f, 0.1f, 100.f);
-
+		
 		if (!imgui.WantCaptureMouse())
 		{
 			cam.Input(window.getWindowInst(), imgui.getSensDeltaTime());
 		}
 
+		ImGui::Begin("Shader");
+		ImGui::ListBox("File", &currShaderFile, shadersFiles, 4);
+		ImGui::End();
+
 		light.Draw(cam);
-		testModel.Draw(modelShader, cam, light);
+		testModel.Draw(shaders[currShaderFile], cam, light);
+		testPlank.Draw(shaders[currShaderFile], cam, light);
 
 		light.DrawWindow();
 		testModel.DrawWindow();
