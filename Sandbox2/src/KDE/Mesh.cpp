@@ -36,8 +36,6 @@ namespace kde
 			glm::rotate(glm::mat4(1.0f), glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f)) *
 			glm::rotate(glm::mat4(1.0f), glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
 
-		
-
 		modelMat = s * r * t;
 		
 		shader.Use();

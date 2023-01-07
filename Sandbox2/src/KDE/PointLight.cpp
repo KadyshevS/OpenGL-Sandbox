@@ -1,6 +1,6 @@
 #include "PointLight.h"
-#include "shapes/Cube.h"
 #include "ImguiManager.h"
+#include "shapes/Cube.h"
 
 namespace kde
 {
@@ -10,10 +10,9 @@ namespace kde
 		shader( Shader("light.vert", "light.frag") )
 	{
 		vao.Bind();
-
 		VBO vbo(vertices);
 		EBO ebo(indices);
-
+		
 		vao.LinkAttrib(vbo, 0, 3, GL_FLOAT, sizeof(Vertex), (void*)0);
 		vao.LinkAttrib(vbo, 1, 3, GL_FLOAT, sizeof(Vertex), (void*)(3 * sizeof(float)));
 		vao.LinkAttrib(vbo, 2, 3, GL_FLOAT, sizeof(Vertex), (void*)(6 * sizeof(float)));

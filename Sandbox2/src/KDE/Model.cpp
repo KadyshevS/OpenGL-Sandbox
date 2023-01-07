@@ -59,7 +59,6 @@ namespace kde
 					);
 				}
 
-				currTextures.reserve(2);
 				auto material = pModel->mMaterials[currMesh->mMaterialIndex];
 				aiString materialName;
 				material->Get(AI_MATKEY_NAME, materialName);
@@ -71,6 +70,8 @@ namespace kde
 				std::string diffuseName;
 				std::string specularName;
 
+				currTextures.reserve(2);
+
 				if (numDiffuse > 0)
 				{
 					material->Get(AI_MATKEY_TEXTURE(aiTextureType_DIFFUSE, 0), aiDiffuseName);
@@ -81,12 +82,12 @@ namespace kde
 					material->Get(AI_MATKEY_TEXTURE(aiTextureType_SPECULAR, 0), aiSpecularName);
 					specularName = fileName.substr(0, fileName.find_last_of("\\")) + "\\" + aiSpecularName.data;
 				}
-				
-				std::string fileType = diffuseName.substr( diffuseName.find_last_of("."), diffuseName.length() );
 
-				if(fileType == ".png")
+				std::string fileType = diffuseName.substr(diffuseName.find_last_of("."), diffuseName.length());
+
+				if (fileType == ".png")
 					currTextures.emplace_back(diffuseName, "diffuse", GL_RGBA);
-				else if(fileType == ".jpg")
+				else if (fileType == ".jpg")
 					currTextures.emplace_back(diffuseName, "diffuse", GL_RGB);
 
 				currTextures.emplace_back(specularName, "specular", GL_RED);

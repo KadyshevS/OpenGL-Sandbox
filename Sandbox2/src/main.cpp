@@ -37,6 +37,7 @@ int main()
 
 	kde::Model testPlank("res\\models\\cobble_floor\\cobble_floor.obj", 0.1f);
 	kde::Model testModel("res\\models\\nanosuit\\nanosuit.obj", 0.1f);
+	kde::Model testModel2("res\\models\\nanosuit\\nanosuit.obj", 0.4f);
 
 	kde::PointLight light;
 	light.position = { 0.0f, 0.2f, 0.5f };
@@ -53,15 +54,21 @@ int main()
 
 //	Enable depth test
 	glEnable(GL_DEPTH_TEST);
-//	glDepthFunc(GL_LESS);
+	glDepthFunc(GL_LESS);
 
-	glEnable(GL_STENCIL_TEST);
-	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
-	
+//	Enable stencil buffer
+//	glEnable(GL_STENCIL_TEST);
+//	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+
+//	Enable back face culling
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_FRONT);
+	glFrontFace(GL_CW);
+
 	while ( !glfwWindowShouldClose(window.getWindowInst()) )
 	{
 		glClearColor(0.2f, 0.3f, 0.8f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // GL_STENCIL_BUFFER_BIT
 		window.AdjustViewport();
 		imgui.Update();
 		cam.UpdateMatrix(45.0f, 0.1f, 100.f);
@@ -73,12 +80,11 @@ int main()
 		ImGui::Begin("Shader");
 		ImGui::ListBox("File", &currShaderFile, shadersFiles, 4);
 		ImGui::End();
+		
+		testModel.Draw(shaders[currShaderFile], cam, light);
+		testPlank.Draw(shaders[currShaderFile], cam, light);
 
 		light.Draw(cam);
-		
-		testModel.DrawOutline(shaders[currShaderFile], cam, light, 0.8f, {0.0f, 1.0f, 0.0f});
-		testPlank.DrawOutline(shaders[currShaderFile], cam, light, 0.6f);
-
 		light.DrawWindow();
 		testModel.DrawWindow();
 

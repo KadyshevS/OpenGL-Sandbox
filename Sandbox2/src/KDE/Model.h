@@ -37,6 +37,12 @@ namespace kde
 		void setPosition(const glm::vec3& translation);
 		void setScale(const glm::vec3& scaling);
 
+		Mesh& operator [] (const int index)
+		{
+			assert( (index < (aiMeshes.size()-1) || (index >= 0) ) && "Mesh's index out of range" );
+			return aiMeshes[index];
+		}
+
 		void DrawWindow();
 	};
 }
