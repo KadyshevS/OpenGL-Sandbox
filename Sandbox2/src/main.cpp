@@ -75,7 +75,9 @@ int main()
 		ImGui::End();
 
 		light.Draw(cam);
-		testModel.DrawOutline(shaders[currShaderFile], cam, light);
+		
+		testModel.DrawOutline(shaders[currShaderFile], cam, light, 0.8f, {0.0f, 1.0f, 0.0f});
+		testPlank.DrawOutline(shaders[currShaderFile], cam, light, 0.6f);
 
 		light.DrawWindow();
 		testModel.DrawWindow();
