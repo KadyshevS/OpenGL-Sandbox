@@ -8,7 +8,7 @@ const unsigned constexpr int HEIGHT = 720;
 int main()
 {
 //	Initializing GLFW & creating window
-	GL::GLFW glfw(3, 3);
+	GL::GLFW glfw(4, 6);
 	GL::Window window(WIDTH, HEIGHT, "OpenGL Test");
 
 //	Creating arrays of vertices & indicies of light source cube
