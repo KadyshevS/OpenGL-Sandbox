@@ -53,17 +53,18 @@ int main()
 
 //	Enable depth test
 	glEnable(GL_DEPTH_TEST);
-	glDepthFunc(GL_LESS);
+//	glDepthFunc(GL_LESS);
+
+	glEnable(GL_STENCIL_TEST);
+	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 	
 	while ( !glfwWindowShouldClose(window.getWindowInst()) )
 	{
 		glClearColor(0.2f, 0.3f, 0.8f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 		window.AdjustViewport();
 		imgui.Update();
-		
 		cam.UpdateMatrix(45.0f, 0.1f, 100.f);
-		
 		if (!imgui.WantCaptureMouse())
 		{
 			cam.Input(window.getWindowInst(), imgui.getSensDeltaTime());
@@ -74,8 +75,7 @@ int main()
 		ImGui::End();
 
 		light.Draw(cam);
-		testModel.Draw(shaders[currShaderFile], cam, light);
-		testPlank.Draw(shaders[currShaderFile], cam, light);
+		testModel.DrawOutline(shaders[currShaderFile], cam, light);
 
 		light.DrawWindow();
 		testModel.DrawWindow();

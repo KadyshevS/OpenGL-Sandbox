@@ -37,6 +37,8 @@
     <None Include="res\shaders\pointlight_spec.frag" />
     <None Include="res\shaders\spotlight_spec.frag" />
     <None Include="res\shaders\depthtest.frag" />
+    <None Include="res\shaders\outline.vert" />
+    <None Include="res\shaders\outline.frag" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\KDE\Shader.h" />

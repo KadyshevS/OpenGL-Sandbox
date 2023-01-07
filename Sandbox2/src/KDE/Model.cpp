@@ -10,7 +10,7 @@ namespace kde
 	{
 		LoadMesh(fileName, scale);
 	}
-
+	
 	bool Model::LoadMesh(const std::string& fileName, const float scale)
 	{
 		try
@@ -108,6 +108,25 @@ namespace kde
 		{
 			m.Draw(shader, camera, light.position, light.color);
 		}
+	}
+	void Model::DrawOutline(Shader& shader, Camera& cam, PointLight& light, float outlining, glm::vec3 outlineColor)
+	{
+		glStencilFunc(GL_ALWAYS, 1, 0xFF);
+		glStencilMask(0xFF);
+
+		Draw(shader, cam, light);
+
+		glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
+		glStencilMask(0x00);
+		glDisable(GL_DEPTH_TEST);
+		outlineShader.Use();
+		glUniform1f(glGetUniformLocation(outlineShader.mProgram, "outlining"), (outlining * 0.01f));
+		glUniform3f(glGetUniformLocation(outlineShader.mProgram, "outlineColor"), outlineColor.x, outlineColor.y, outlineColor.z);
+		Draw(outlineShader, cam, light);
+
+		glStencilMask(0xFF);
+		glStencilFunc(GL_ALWAYS, 0, 0xFF);
+		glEnable(GL_DEPTH_TEST);
 	}
 
 	void Model::DrawWindow()

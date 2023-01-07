@@ -187,6 +187,8 @@
     <None Include="res\shaders\directlight_spec.frag" />
     <None Include="res\shaders\light.frag" />
     <None Include="res\shaders\light.vert" />
+    <None Include="res\shaders\outline.frag" />
+    <None Include="res\shaders\outline.vert" />
     <None Include="res\shaders\pointlight.frag" />
     <None Include="res\shaders\pointlight_spec.frag" />
     <None Include="res\shaders\spotlight.frag" />
