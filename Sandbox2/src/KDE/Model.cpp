@@ -27,6 +27,9 @@ namespace kde
 			aiMeshes.clear();
 			aiMeshes.reserve(pModel->mNumMeshes);
 
+			aiMeshNames.clear();
+			aiMeshNames.reserve(aiMeshes.size());
+
 			for (unsigned int i = 0; i < pModel->mNumMeshes; i++)
 			{
 			//	Getting current mesh
@@ -93,6 +96,7 @@ namespace kde
 				currTextures.emplace_back(specularName, "specular", GL_RED);
 
 				aiMeshes.emplace_back(currVerts, currIndices, currTextures, currMesh->mName.C_Str());
+				aiMeshNames.emplace_back(aiMeshes[i].meshName.c_str());
 			}
 		}
 		catch (std::runtime_error e)
@@ -105,9 +109,18 @@ namespace kde
 	}
 	void Model::Draw(Shader& shader, Camera& camera, PointLight& light)
 	{
+		auto t = glm::translate(glm::mat4(1.0f), position);
+		auto s = glm::scale(glm::mat4(1.0f), scale);
+		auto r =
+			glm::rotate(glm::mat4(1.0f), glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f)) *
+			glm::rotate(glm::mat4(1.0f), glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f)) *
+			glm::rotate(glm::mat4(1.0f), glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
+
+		auto modelMat = t * r * s;
+
 		for (auto& m : aiMeshes)
 		{
-			m.Draw(shader, camera, light.position, light.color);
+			m.Draw(shader, camera, light.position, light.color, modelMat);
 		}
 	}
 	void Model::DrawOutline(Shader& shader, Camera& cam, PointLight& light, float outlining, glm::vec3 outlineColor)
@@ -132,9 +145,62 @@ namespace kde
 
 	void Model::DrawWindow()
 	{
-		for (auto& m : aiMeshes)
+		std::string mainName( fileName.substr( fileName.find_last_of("\\")+1, fileName.find_last_of(".")-1 ));
+
+		ImGui::Begin("Model");
+
+		if ( ImGui::TreeNode(mainName.c_str()) )
 		{
-			m.DrawWindow();
+			for ( unsigned int i = 0; i < aiMeshes.size(); i++ )
+			{
+				if ( ImGui::TreeNode(aiMeshNames[i]) )
+				{
+					ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.0f, 1.0f), "Position");
+					ImGui::SliderFloat("X", &aiMeshes[i].position.x, -2.0f, 2.0f, "%.1f");
+					ImGui::SliderFloat("Y", &aiMeshes[i].position.y, -2.0f, 2.0f, "%.1f");
+					ImGui::SliderFloat("Z", &aiMeshes[i].position.z, -2.0f, 2.0f, "%.1f");
+					ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.0f, 1.0f), "Scale");
+					ImGui::SliderFloat("X ", &aiMeshes[i].scale.x, 0.5f, 3.0f, "%.1f");
+					ImGui::SliderFloat("Y ", &aiMeshes[i].scale.y, 0.5f, 3.0f, "%.1f");
+					ImGui::SliderFloat("Z ", &aiMeshes[i].scale.z, 0.5f, 3.0f, "%.1f");
+					ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.0f, 1.0f), "Rotation");
+					ImGui::SliderFloat("X  ", &aiMeshes[i].rotation.x, -180.0f, 180.0f, "%.1f");
+					ImGui::SliderFloat("Y  ", &aiMeshes[i].rotation.y, -180.0f, 180.0f, "%.1f");
+					ImGui::SliderFloat("Z  ", &aiMeshes[i].rotation.z, -180.0f, 180.0f, "%.1f");
+
+					if (ImGui::Button("Clear"))
+					{
+						aiMeshes[i].position = { 0.0f, 0.0f, 0.0f };
+						aiMeshes[i].scale = { 1.0f, 1.0f, 1.0f };
+						aiMeshes[i].rotation = { 0.0f, 0.0f, 0.0f };
+					}
+					ImGui::TreePop();
+				}
+			}
+
+			ImGui::TreePop();
 		}
+
+		/*ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.0f, 1.0f), "Position");
+		ImGui::SliderFloat("X", &aiMeshes[selectedMesh].position.x, -2.0f, 2.0f, "%.1f");
+		ImGui::SliderFloat("Y", &aiMeshes[selectedMesh].position.y, -2.0f, 2.0f, "%.1f");
+		ImGui::SliderFloat("Z", &aiMeshes[selectedMesh].position.z, -2.0f, 2.0f, "%.1f");
+		ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.0f, 1.0f), "Scale");
+		ImGui::SliderFloat("X ", &aiMeshes[selectedMesh].scale.x, 0.5f, 3.0f, "%.1f");
+		ImGui::SliderFloat("Y ", &aiMeshes[selectedMesh].scale.y, 0.5f, 3.0f, "%.1f");
+		ImGui::SliderFloat("Z ", &aiMeshes[selectedMesh].scale.z, 0.5f, 3.0f, "%.1f");
+		ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.0f, 1.0f), "Rotation");
+		ImGui::SliderFloat("X  ", &aiMeshes[selectedMesh].rotation.x, -180.0f, 180.0f, "%.1f");
+		ImGui::SliderFloat("Y  ", &aiMeshes[selectedMesh].rotation.y, -180.0f, 180.0f, "%.1f");
+		ImGui::SliderFloat("Z  ", &aiMeshes[selectedMesh].rotation.z, -180.0f, 180.0f, "%.1f");
+
+		if (ImGui::Button("Clear"))
+		{
+			position = { 0.0f, 0.0f, 0.0f };
+			scale = { 1.0f, 1.0f, 1.0f };
+			rotation = { 0.0f, 0.0f, 0.0f };
+		}
+		*/
+		ImGui::End();
 	}
 }

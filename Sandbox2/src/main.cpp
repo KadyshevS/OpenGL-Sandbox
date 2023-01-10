@@ -35,9 +35,9 @@ int main()
 	};
 	kde::Shader lightShader("light.vert", "light.frag");
 
-	kde::Model testPlank("res\\models\\cobble_floor\\cobble_floor.obj", 0.1f);
 	kde::Model testModel("res\\models\\nanosuit\\nanosuit.obj", 0.1f);
-	kde::Model testModel2("res\\models\\nanosuit\\nanosuit.obj", 0.4f);
+	kde::Model testGrass("res\\models\\grass\\grass.gltf", 3.0f);
+	kde::Model testGround("res\\models\\ground\\scene.gltf", 1.0f);
 
 	kde::PointLight light;
 	light.position = { 0.0f, 0.2f, 0.5f };
@@ -57,8 +57,8 @@ int main()
 	glDepthFunc(GL_LESS);
 
 //	Enable stencil buffer
-//	glEnable(GL_STENCIL_TEST);
-//	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+	glEnable(GL_STENCIL_TEST);
+	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 
 //	Enable back face culling
 	glEnable(GL_CULL_FACE);
@@ -68,7 +68,7 @@ int main()
 	while ( !glfwWindowShouldClose(window.getWindowInst()) )
 	{
 		glClearColor(0.2f, 0.3f, 0.8f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // GL_STENCIL_BUFFER_BIT
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT); // GL_STENCIL_BUFFER_BIT
 		window.AdjustViewport();
 		imgui.Update();
 		cam.UpdateMatrix(45.0f, 0.1f, 100.f);
@@ -82,7 +82,8 @@ int main()
 		ImGui::End();
 		
 		testModel.Draw(shaders[currShaderFile], cam, light);
-		testPlank.Draw(shaders[currShaderFile], cam, light);
+		testGrass.Draw(shaders[currShaderFile], cam, light);
+		testGround.Draw(shaders[currShaderFile], cam, light);
 
 		light.Draw(cam);
 		light.DrawWindow();
