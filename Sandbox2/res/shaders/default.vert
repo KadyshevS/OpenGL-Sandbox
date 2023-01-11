@@ -13,9 +13,11 @@ out vec2 texCoord;
 uniform mat4 camMatrix;
 uniform mat4 model;
 
+uniform mat4 mTransform;
+
 void main()
 {
-	crntPos = vec3(model * vec4(position, 1.0f));
+	crntPos = vec3(model * mTransform * vec4(position, 1.0f));
 	oColor = color;
 	oNormal = normal;
 	texCoord = tex;
