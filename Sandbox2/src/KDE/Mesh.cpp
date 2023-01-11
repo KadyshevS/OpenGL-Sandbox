@@ -25,9 +25,9 @@ namespace kde
 		ebo.Unbind();
 	}
 
-	void Mesh::Draw(Shader& shader, Camera& camera, glm::vec3& lightPos, glm::vec3& lightColor)
+	void Mesh::Draw(Shader& shader, Camera& camera, glm::vec3& lightPos, glm::vec3& lightColor, glm::mat4 modelMat)
 	{
-		glm::mat4 modelMat(1.0f);
+		glm::mat4 meshMat = glm::mat4(1.0f) * modelMat;
 
 		auto t = glm::translate(glm::mat4(1.0f), position);
 		auto s = glm::scale(glm::mat4(1.0f), scale);
@@ -36,10 +36,12 @@ namespace kde
 			glm::rotate(glm::mat4(1.0f), glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f)) *
 			glm::rotate(glm::mat4(1.0f), glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
 
-		modelMat = s * r * t;
+		glUniformMatrix4fv(glGetUniformLocation(shader.mProgram, "translation"), 1, GL_FALSE, glm::value_ptr(t));
+		glUniformMatrix4fv(glGetUniformLocation(shader.mProgram, "scaling"), 1, GL_FALSE, glm::value_ptr(s));
+		glUniformMatrix4fv(glGetUniformLocation(shader.mProgram, "rotation"), 1, GL_FALSE, glm::value_ptr(r));
 		
 		shader.Use();
-		glUniformMatrix4fv(glGetUniformLocation(shader.mProgram, "model"), 1, GL_FALSE, glm::value_ptr(modelMat));
+		glUniformMatrix4fv(glGetUniformLocation(shader.mProgram, "model"), 1, GL_FALSE, glm::value_ptr(meshMat));
 		glUniform4f(glGetUniformLocation(shader.mProgram, "lightColor"), lightColor.x, lightColor.y, lightColor.z, 1.0f);
 		glUniform3f(glGetUniformLocation(shader.mProgram, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
 
