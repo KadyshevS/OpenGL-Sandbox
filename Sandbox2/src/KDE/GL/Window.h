@@ -15,6 +15,7 @@ namespace GL
 		~Window();
 
 		GLFWwindow* getWindowInst() const;
+		bool ShouldClose() const;
 
 		void AdjustViewport();
 		void SetContextCurrent();

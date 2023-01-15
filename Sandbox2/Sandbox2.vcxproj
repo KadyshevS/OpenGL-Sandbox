@@ -201,6 +201,7 @@
     <None Include="res\shaders\depthtest.frag" />
     <None Include="res\shaders\directlight.frag" />
     <None Include="res\shaders\directlight_spec.frag" />
+    <None Include="res\shaders\directlight_spec_alphablend.frag" />
     <None Include="res\shaders\light.frag" />
     <None Include="res\shaders\light.vert" />
     <None Include="res\shaders\outline.frag" />

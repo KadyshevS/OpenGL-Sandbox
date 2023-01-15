@@ -37,7 +37,7 @@ void main()
 	float a = 3.0;
 	float b = 0.7;
 	float inten = 1.0f / (a * dist * dist + b * dist + 1.0f);
-
+	
 // ambient lighting
 	float ambient = 0.20f;
 

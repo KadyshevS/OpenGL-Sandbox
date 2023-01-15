@@ -14,16 +14,6 @@ int main()
 //	Creating arrays of vertices & indicies of light source cube
 	std::vector<Vertex> lightVertices = Cube::vertices();
 	std::vector<GLuint> lightIndices = Cube::indices();
-
-	std::vector<Vertex> plankVerts = Plank::vertices();
-	std::vector<GLuint> plankInd = Plank::indices();
-
-//	Creating array of textures
-	std::vector<kde::Texture> tex =
-	{
-		kde::Texture("res\\textures\\planks.png"	 , "diffuse" , GL_RGBA),
-		kde::Texture("res\\textures\\planksSpec.png", "specular", GL_RED),
-	};
 	
 //	Creating & bind shaders, vao, vbo, ebo for light source
 	kde::Shader shaders[] =
@@ -31,12 +21,13 @@ int main()
 		kde::Shader("default.vert", "pointlight_spec.frag"),
 		kde::Shader("default.vert", "directlight_spec.frag"),
 		kde::Shader("default.vert", "spotlight_spec.frag"),
-		kde::Shader("default.vert", "depthtest.frag"),
+		kde::Shader("default.vert", "directlight_spec_alphablend.frag"),
 	};
 	kde::Shader lightShader("light.vert", "light.frag");
 
 	kde::Model testModel("res\\models\\nanosuit\\nanosuit.obj", 0.1f);
-	kde::Model testGround("res\\models\\ground\\scene.gltf", 0.1f);
+	kde::Model testGrass("res\\models\\terrain\\terrain.obj", 0.1f);
+	kde::Model testWinLogo("res\\models\\winlogo_cube\\winlogo.obj", 0.05f);
 
 	kde::PointLight light;
 	light.position = { 0.0f, 0.2f, 0.5f };
@@ -49,7 +40,7 @@ int main()
 
 //	Main loop
 	int currShaderFile = 0;
-	const char* shadersFiles[] = { "Point Light", "Directional Light", "Spot Light", "Depth Buffer" };
+	const char* shadersFiles[] = { "Point Light", "Directional Light", "Spot Light", "Alpha Blend" };
 
 //	Enable depth test
 	glEnable(GL_DEPTH_TEST);
@@ -60,11 +51,14 @@ int main()
 	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 
 //	Enable back face culling
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_FRONT);
-	glFrontFace(GL_CW);
+//	glEnable(GL_CULL_FACE);
+//	glCullFace(GL_FRONT);
+//	glFrontFace(GL_CW);
 
-	while ( !glfwWindowShouldClose(window.getWindowInst()) )
+//	Enable alpha blending
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	while ( !window.ShouldClose() )
 	{
 		glClearColor(0.2f, 0.3f, 0.8f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT); // GL_STENCIL_BUFFER_BIT
@@ -80,12 +74,18 @@ int main()
 		ImGui::ListBox("File", &currShaderFile, shadersFiles, 4);
 		ImGui::End();
 		
+		testGrass.Draw(shaders[3], cam, light);
 		testModel.Draw(shaders[currShaderFile], cam, light);
-		testGround.Draw(shaders[currShaderFile], cam, light);
+
+		glEnable(GL_BLEND);
+		testWinLogo.Draw(shaders[3], cam, light);
+		glDisable(GL_BLEND);
 
 		light.Draw(cam);
 		light.DrawWindow();
 		testModel.DrawWindow();
+		testGrass.DrawWindow();
+		testWinLogo.DrawWindow();
 
 		imgui.ShowStatistics();
 		imgui.Render();

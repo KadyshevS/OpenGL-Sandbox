@@ -10,7 +10,6 @@ namespace kde
 	class Mesh
 	{
 		friend class Model;
-
 	public:
 		std::string meshName = "";
 
@@ -23,7 +22,6 @@ namespace kde
 		glm::vec3 rotation = { 0.0f, 0.0f, 0.0f };
 
 		VAO vao;
-
 	public:
 		Mesh(std::vector<Vertex>& vertices, std::vector<GLuint>& indices, std::vector<Texture>& textures, const std::string& meshName);
 

@@ -29,6 +29,10 @@ namespace GL
 	{
 		return win;
 	}
+	bool Window::ShouldClose() const
+	{
+		return glfwWindowShouldClose(win);
+	}
 
 	void Window::AdjustViewport()
 	{
