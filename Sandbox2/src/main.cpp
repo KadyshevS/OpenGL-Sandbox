@@ -78,7 +78,9 @@ int main()
 		testModel.Draw(shaders[currShaderFile], cam, light);
 
 		glEnable(GL_BLEND);
+		glDisable(GL_DEPTH_TEST);
 		testWinLogo.Draw(shaders[3], cam, light);
+		glEnable(GL_DEPTH_TEST);
 		glDisable(GL_BLEND);
 
 		light.Draw(cam);
