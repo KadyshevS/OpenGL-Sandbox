@@ -15,6 +15,8 @@ int main()
 
 	kde::Framebuffer frameBuffer(WIDTH, HEIGHT);
 
+	kde::Skybox skybox("skybox");
+
 //	Creating arrays of vertices & indicies of light source cube
 	std::vector<Vertex> lightVertices = Cube::vertices();
 	std::vector<GLuint> lightIndices = Cube::indices();
@@ -74,7 +76,7 @@ int main()
 		glEnable(GL_DEPTH_TEST);
 		window.AdjustViewport();
 		imgui.Update();
-		cam.UpdateMatrix(45.0f, 0.1f, 100.f);
+		cam.UpdateMatrix(65.0f, 0.1f, 100.f);
 		if (!imgui.WantCaptureMouse())
 		{
 			cam.Input(window.getWindowInst(), imgui.getSensDeltaTime());
@@ -83,6 +85,8 @@ int main()
 		ImGui::Begin("Shader");
 		ImGui::ListBox("File", &currShaderFile, shadersFiles, 4);
 		ImGui::End();
+
+		skybox.Draw(cam, WIDTH, HEIGHT, 65.0f, 0.1f, 100.0f);
 		
 		testGrass.Draw(shaders[currShaderFile + 3], cam, light);
 		testModel.Draw(shaders[currShaderFile], cam, light);

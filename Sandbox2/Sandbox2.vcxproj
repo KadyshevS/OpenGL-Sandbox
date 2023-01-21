@@ -189,6 +189,7 @@
     <ClCompile Include="src\KDE\Mesh.cpp" />
     <ClCompile Include="src\KDE\Model.cpp" />
     <ClCompile Include="src\KDE\PointLight.cpp" />
+    <ClCompile Include="src\KDE\Skybox.cpp" />
     <ClCompile Include="src\KDE\Texture.cpp" />
     <ClCompile Include="src\KDE\VAO.cpp" />
     <ClCompile Include="src\KDE\VBO.cpp" />
@@ -212,6 +213,8 @@
     <None Include="res\shaders\pointlight.frag" />
     <None Include="res\shaders\pointlight_spec.frag" />
     <None Include="res\shaders\pointlight_spec_alphablend.frag" />
+    <None Include="res\shaders\skybox.frag" />
+    <None Include="res\shaders\skybox.vert" />
     <None Include="res\shaders\spotlight.frag" />
     <None Include="res\shaders\spotlight_spec.frag" />
     <None Include="res\shaders\spotlight_spec_alphablend.frag" />
@@ -243,6 +246,7 @@
     <ClInclude Include="src\KDE\Shader.h" />
     <ClInclude Include="src\KDE\shapes\Cube.h" />
     <ClInclude Include="src\KDE\shapes\Plank.h" />
+    <ClInclude Include="src\KDE\Skybox.h" />
     <ClInclude Include="src\KDE\Texture.h" />
     <ClInclude Include="src\KDE\VAO.h" />
     <ClInclude Include="src\KDE\VBO.h" />
@@ -253,6 +257,12 @@
     <Image Include="res\textures\kot.jpg" />
     <Image Include="res\textures\planks.png" />
     <Image Include="res\textures\planksSpec.png" />
+    <Image Include="res\textures\skybox\back.png" />
+    <Image Include="res\textures\skybox\bottom.png" />
+    <Image Include="res\textures\skybox\front.png" />
+    <Image Include="res\textures\skybox\left.png" />
+    <Image Include="res\textures\skybox\right.jpg" />
+    <Image Include="res\textures\skybox\top.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

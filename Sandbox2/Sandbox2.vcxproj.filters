@@ -25,6 +25,7 @@
     <ClCompile Include="src\imgui\imgui_widgets.cpp" />
     <ClCompile Include="src\KDE\ImguiManager.cpp" />
     <ClCompile Include="src\KDE\Framebuffer.cpp" />
+    <ClCompile Include="src\KDE\Skybox.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\default.vert" />
@@ -45,6 +46,8 @@
     <None Include="res\shaders\spotlight_spec_alphablend.frag" />
     <None Include="res\shaders\framebuffer.vert" />
     <None Include="res\shaders\framebuffer.frag" />
+    <None Include="res\shaders\skybox.vert" />
+    <None Include="res\shaders\skybox.frag" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\KDE\Shader.h" />
@@ -76,6 +79,7 @@
     <ClInclude Include="src\KDE\ImguiManager.h" />
     <ClInclude Include="src\KDE\KDMath.h" />
     <ClInclude Include="src\KDE\Framebuffer.h" />
+    <ClInclude Include="src\KDE\Skybox.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\textures\kot.jpg" />
@@ -83,5 +87,11 @@
     <Image Include="res\textures\planks.png" />
     <Image Include="res\textures\planksSpec.png" />
     <Image Include="res\textures\brick.png" />
+    <Image Include="res\textures\skybox\back.png" />
+    <Image Include="res\textures\skybox\bottom.png" />
+    <Image Include="res\textures\skybox\front.png" />
+    <Image Include="res\textures\skybox\left.png" />
+    <Image Include="res\textures\skybox\right.jpg" />
+    <Image Include="res\textures\skybox\top.png" />
   </ItemGroup>
 </Project>

@@ -15,7 +15,7 @@ namespace kde
 		glm::mat4 proj(1.0f);
 
 		view = glm::lookAt(position, position + orientation, up);
-		proj = glm::perspectiveFov(FOVdeg, (float)width, (float)height, nearPlane, farPlane);
+		proj = glm::perspectiveFov(glm::radians(FOVdeg), (float)width, (float)height, nearPlane, farPlane);
 
 		cameraMatrix = proj * view;
 	}
