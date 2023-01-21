@@ -24,6 +24,7 @@
     <ClCompile Include="src\imgui\imgui_tables.cpp" />
     <ClCompile Include="src\imgui\imgui_widgets.cpp" />
     <ClCompile Include="src\KDE\ImguiManager.cpp" />
+    <ClCompile Include="src\KDE\Framebuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\default.vert" />
@@ -40,6 +41,10 @@
     <None Include="res\shaders\outline.vert" />
     <None Include="res\shaders\outline.frag" />
     <None Include="res\shaders\directlight_spec_alphablend.frag" />
+    <None Include="res\shaders\pointlight_spec_alphablend.frag" />
+    <None Include="res\shaders\spotlight_spec_alphablend.frag" />
+    <None Include="res\shaders\framebuffer.vert" />
+    <None Include="res\shaders\framebuffer.frag" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\KDE\Shader.h" />
@@ -70,6 +75,7 @@
     <ClInclude Include="src\imgui\imgui_impl_opengl3_loader.h" />
     <ClInclude Include="src\KDE\ImguiManager.h" />
     <ClInclude Include="src\KDE\KDMath.h" />
+    <ClInclude Include="src\KDE\Framebuffer.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\textures\kot.jpg" />

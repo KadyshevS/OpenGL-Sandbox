@@ -16,3 +16,4 @@
 #include "shapes/Cube.h"
 #include "shapes/Plank.h"
 #include "KDE/PointLight.h"
+#include "Framebuffer.h"

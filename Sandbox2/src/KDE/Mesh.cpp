@@ -66,6 +66,8 @@ namespace kde
 		camera.Matrix(shader, "camMatrix");
 
 		glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+
+		vao.Unbind();
 	}
 	std::vector<Vertex> Mesh::getVertices() const
 	{

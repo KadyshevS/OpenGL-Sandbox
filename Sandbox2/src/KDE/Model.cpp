@@ -90,7 +90,7 @@ namespace kde
 				else if (fileType == ".jpg")
 					currTextures.emplace_back(diffuseName, "diffuse", GL_RGB);
 
-				currTextures.emplace_back(specularName, "specular", GL_RED);
+				currTextures.emplace_back(specularName, "specular", GL_RGB);
 
 				aiMeshes.emplace_back(currVerts, currIndices, currTextures, currMesh->mName.C_Str());
 			}
