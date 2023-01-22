@@ -47,7 +47,7 @@ vec4 direcLight()
 	float ambient = 0.20f;
 
 	// diffuse lighting
-	vec3 normal = normalize(oNormal);
+	vec3 normal = normalize(Normal);
 	vec3 lightDirection = normalize(vec3(1.0f, 1.0f, 0.0f));
 	float diffuse = max(dot(normal, lightDirection), 0.0f);
 
@@ -70,7 +70,7 @@ vec4 spotLight()
 	float ambient = 0.20f;
 
 	// diffuse lighting
-	vec3 normal = normalize(oNormal);
+	vec3 normal = normalize(Normal);
 	vec3 lightDirection = normalize(lightPos - crntPos);
 	float diffuse = max(dot(normal, lightDirection), 0.0f);
 
@@ -103,7 +103,7 @@ vec4 pointLightClr()
 	float ambient = 0.20f;
 
 	// diffuse lighting
-	vec3 normal = normalize(oNormal);
+	vec3 normal = normalize(Normal);
 	vec3 lightDirection = normalize(lightVec);
 	float diffuse = max(dot(normal, lightDirection), 0.0f);
 
@@ -114,7 +114,7 @@ vec4 pointLightClr()
 	float specAmount = pow(max(dot(viewDirection, reflectionDirection), 0.0f), 16);
 	float specular = specAmount * specularLight;
 
-	return vec4(oColor,1.0f) * (diffuse * inten + ambient) * lightColor;
+	return vec4(Color,1.0f) * (diffuse * inten + ambient) * lightColor;
 }
 vec4 direcLightClr()
 {
@@ -122,7 +122,7 @@ vec4 direcLightClr()
 	float ambient = 0.20f;
 
 	// diffuse lighting
-	vec3 normal = normalize(oNormal);
+	vec3 normal = normalize(Normal);
 	vec3 lightDirection = normalize(vec3(1.0f, 1.0f, 0.0f));
 	float diffuse = max(dot(normal, lightDirection), 0.0f);
 
@@ -133,7 +133,7 @@ vec4 direcLightClr()
 	float specAmount = pow(max(dot(viewDirection, reflectionDirection), 0.0f), 16);
 	float specular = specAmount * specularLight;
 
-	return (vec4(oColor, 1.0f) * (diffuse + ambient) + specular) * lightColor;
+	return (vec4(Color, 1.0f) * (diffuse + ambient) + specular) * lightColor;
 }
 vec4 spotLightClr()
 {
@@ -145,7 +145,7 @@ vec4 spotLightClr()
 	float ambient = 0.20f;
 
 	// diffuse lighting
-	vec3 normal = normalize(oNormal);
+	vec3 normal = normalize(Normal);
 	vec3 lightDirection = normalize(lightPos - crntPos);
 	float diffuse = max(dot(normal, lightDirection), 0.0f);
 
@@ -160,7 +160,7 @@ vec4 spotLightClr()
 	float angle = dot(vec3(0.0f, -1.0f, 0.0f), -lightDirection);
 	float inten = clamp((angle - outerCone) / (innerCone - outerCone), 0.0f, 1.0f);
 
-	return (vec4(oColor, 1.0f) * (diffuse * inten + ambient) + specular * inten) * lightColor;
+	return (vec4(Color, 1.0f) * (diffuse * inten + ambient) + specular * inten) * lightColor;
 }
 
 vec4 pointLightNoSpec()
@@ -178,7 +178,7 @@ vec4 pointLightNoSpec()
 	float ambient = 0.20f;
 
 	// diffuse lighting
-	vec3 normal = normalize(oNormal);
+	vec3 normal = normalize(Normal);
 	vec3 lightDirection = normalize(lightVec);
 	float diffuse = max(dot(normal, lightDirection), 0.0f);
 
@@ -197,7 +197,7 @@ vec4 direcLightNoSpec()
 	float ambient = 0.20f;
 
 	// diffuse lighting
-	vec3 normal = normalize(oNormal);
+	vec3 normal = normalize(Normal);
 	vec3 lightDirection = normalize(vec3(1.0f, 1.0f, 0.0f));
 	float diffuse = max(dot(normal, lightDirection), 0.0f);
 
@@ -220,7 +220,7 @@ vec4 spotLightNoSpec()
 	float ambient = 0.20f;
 
 	// diffuse lighting
-	vec3 normal = normalize(oNormal);
+	vec3 normal = normalize(Normal);
 	vec3 lightDirection = normalize(lightPos - crntPos);
 	float diffuse = max(dot(normal, lightDirection), 0.0f);
 

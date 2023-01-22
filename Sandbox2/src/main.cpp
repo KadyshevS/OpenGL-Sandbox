@@ -24,18 +24,20 @@ int main()
 //	Creating & bind shaders, vao, vbo, ebo for light source
 	kde::Shader shaders[] =
 	{
-		kde::Shader("default.vert", "pointlight_spec.frag"),
-		kde::Shader("default.vert", "directlight_spec.frag"),
-		kde::Shader("default.vert", "spotlight_spec.frag"),
-		kde::Shader("default.vert", "pointlight_spec_alphablend.frag"),
-		kde::Shader("default.vert", "directlight_spec_alphablend.frag"),
-		kde::Shader("default.vert", "spotlight_spec_alphablend.frag"),
+		kde::Shader("default.vert", "pointlight_spec.frag", "default.geom"),
+		kde::Shader("default.vert", "directlight_spec.frag", "default.geom"),
+		kde::Shader("default.vert", "spotlight_spec.frag", "default.geom"),
+		kde::Shader("default.vert", "pointlight_spec_alphablend.frag", "default.geom"),
+		kde::Shader("default.vert", "directlight_spec_alphablend.frag", "default.geom"),
+		kde::Shader("default.vert", "spotlight_spec_alphablend.frag", "default.geom"),
 	};
 	kde::Shader lightShader("light.vert", "light.frag");
 
 	kde::Model testModel("res\\models\\nanosuit\\nanosuit.obj", 0.1f);
 	kde::Model testGrass("res\\models\\terrain\\terrain.obj", 0.1f);
 	kde::Model testWinLogo("res\\models\\winlogo\\winlogo.obj", 0.5f);
+
+	testWinLogo[0][1].texUV = {0.5, 0.5};
 
 	kde::PointLight light;
 	light.position = {0.0f, 0.2f, 0.5f};

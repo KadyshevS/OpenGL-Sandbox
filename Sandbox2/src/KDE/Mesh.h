@@ -30,6 +30,12 @@ namespace kde
 		std::vector<Vertex> getVertices() const;
 		std::vector<unsigned int> getIndices() const;
 
+		Vertex& operator [] (const int index)
+		{
+			assert( (index < (vertices.size()-1) || (index >= 0) ) && "Vertex's index out of range" );
+			return vertices[index];
+		}
+
 		void DrawWindow();
 	};
 }

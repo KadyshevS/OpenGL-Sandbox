@@ -15,7 +15,7 @@ namespace kde
 		GLuint mProgram;
 
 	public:
-		Shader(const std::string& vertexShader, const std::string& fragmentShader);
+		Shader(const std::string& vertexShader, const std::string& fragmentShader, const std::string& geometryShader = "NONE");
 		~Shader();
 
 		void Use();

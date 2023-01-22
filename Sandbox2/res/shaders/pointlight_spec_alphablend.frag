@@ -3,9 +3,9 @@
 out vec4 fragColor;
 
 in vec3 crntPos;
-in vec3 Color;
-in vec3 Normal;
-in vec2 TexCoord;
+in vec3 gColor;
+in vec3 gNormal;
+in vec2 gTexCoord;
 
 uniform sampler2D diffuse0;
 uniform sampler2D specular0;
@@ -42,7 +42,7 @@ void main()
 	float ambient = 0.20f;
 
 	// diffuse lighting
-	vec3 normal = normalize(Normal);
+	vec3 normal = normalize(gNormal);
 	vec3 lightDirection = normalize(lightVec);
 	float diffuse = max(dot(normal, lightDirection), 0.0f);
 
@@ -53,13 +53,13 @@ void main()
 	float specAmount = pow(max(dot(viewDirection, reflectionDirection), 0.0f), 16);
 	float specular = specAmount * specularLight;
 
-	if (texture(diffuse0, TexCoord).a < 0.1)
+	if (texture(diffuse0, gTexCoord).a < 0.1)
 		discard;
 
-	fragColor = (texture(diffuse0, TexCoord) * (diffuse * inten + ambient) + texture(specular0, TexCoord).r * specular * inten) * lightColor;
+	fragColor = (texture(diffuse0, gTexCoord) * (diffuse * inten + ambient) + texture(specular0, gTexCoord).r * specular * inten) * lightColor;
 	
 //	Fog effect (depth buffer)
-//	vec4 pointLight = (texture(diffuse0, TexCoord) * (diffuse * inten + ambient) + texture(specular0, TexCoord).r * specular * inten) * lightColor;
+//	vec4 pointLight = (texture(diffuse0, gTexCoord) * (diffuse * inten + ambient) + texture(specular0, gTexCoord).r * specular * inten) * lightColor;
 //	float depth = logisticDepth(gl_FragCoord.z, 0.9f, 3.0f);
 //	fragColor = pointLight * (1.0f - depth) + vec4(depth * vec3(0.85f, 0.85f, 0.90f), 1.0f);
 }

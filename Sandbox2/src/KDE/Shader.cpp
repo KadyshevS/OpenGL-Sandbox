@@ -29,7 +29,7 @@ namespace kde
 			char* msg = (char*)alloca(len * sizeof(char));
 			glGetShaderInfoLog(id, len, &len, msg);
 			std::cout << "Failed to compile " <<
-				(type == GL_VERTEX_SHADER ? "vertex" : "fragment")
+				(type == GL_VERTEX_SHADER ? "vertex" : (type == GL_FRAGMENT_SHADER) ? "fragment" : "geometry")
 				<< " shader " << std::endl;
 			std::cout << msg << std::endl;
 			glDeleteShader(id);
@@ -40,24 +40,30 @@ namespace kde
 		return id;
 	}
 
-	Shader::Shader(const std::string& vertexShader, const std::string& fragmentShader)
+	Shader::Shader(const std::string& vertexShader, const std::string& fragmentShader, const std::string& geometryShader)
 	{
 	//	Getting shaders source
 		std::string vs_src = GetFileSource( "res/shaders/" + vertexShader );
+		std::string gs_src = (geometryShader != "NONE") ? GetFileSource("res/shaders/" + geometryShader) : "NONE";
 		std::string fs_src = GetFileSource( "res/shaders/" + fragmentShader );
 
 	//	Creating & binding shaders
 		GLuint vs = CompileShader(GL_VERTEX_SHADER, vs_src);
+		GLuint gs = (geometryShader != "NONE") ? CompileShader(GL_GEOMETRY_SHADER, gs_src) : 0;
 		GLuint fs = CompileShader(GL_FRAGMENT_SHADER, fs_src);
 		
 	//	Creating shader program & binding shaders to this
 		mProgram = glCreateProgram();
 		glAttachShader(mProgram, vs);
+		if(geometryShader != "NONE")
+			glAttachShader(mProgram, gs);
 		glAttachShader(mProgram, fs);
 		glLinkProgram(mProgram);
 	
 	//	Deleting shader objects
 		glDeleteShader(vs);
+		if (geometryShader != "NONE")
+			glDeleteShader(gs);
 		glDeleteShader(fs);
 	}
 	Shader::~Shader()

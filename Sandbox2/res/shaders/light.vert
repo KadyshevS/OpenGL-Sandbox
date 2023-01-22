@@ -1,6 +1,6 @@
 #version 330 core
 	
-layout (location = 0) in vec3 inPos;
+layout (location = 0) in vec3 inPosition;
 
 out vec4 color;
 
@@ -10,6 +10,6 @@ uniform vec4 lightColor;
 
 void main()
 {
-	gl_Position = camMatrix * model * vec4(inPos, 1.0);
+	gl_Position = camMatrix * model * vec4(inPosition, 1.0);
 	color = lightColor;
 }
