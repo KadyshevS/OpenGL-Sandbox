@@ -7,6 +7,7 @@ layout (location = 3) in vec2 inTexCoord;
 
 out DATA
 {
+	vec3 dCrntPos;
     vec3 dNormal;
 	vec3 dColor;
 	vec2 dTexCoord;
@@ -21,6 +22,7 @@ uniform mat4 mTransform;
 void main()
 {
 	gl_Position = model * mTransform * vec4(inPosition, 1.0f);
+	data_out.dCrntPos = vec3(model * mTransform * vec4(inPosition, 1.0f));
 	data_out.dNormal = inNormal;
 	data_out.dColor = inColor;
 	data_out.dTexCoord = inTexCoord;
