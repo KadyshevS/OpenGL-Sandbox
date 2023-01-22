@@ -10,7 +10,7 @@ const unsigned constexpr int HEIGHT = 720;
 int main()
 {
 //	Initializing GLFW & creating window
-	GL::GLFW glfw(4, 6);
+	GL::GLFW glfw(3, 3);
 	GL::Window window(WIDTH, HEIGHT, "OpenGL Test");
 
 	kde::Framebuffer frameBuffer(WIDTH, HEIGHT);

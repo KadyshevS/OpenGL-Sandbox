@@ -1,11 +1,11 @@
-#version 460 core
+#version 330 core
 	
 out vec4 fragColor;
 
 in vec3 crntPos;
-in vec3 oColor;
-in vec3 oNormal;
-in vec2 texCoord;
+in vec3 Color;
+in vec3 Normal;
+in vec2 TexCoord;
 
 uniform sampler2D diffuse0;
 uniform sampler2D specular0;
@@ -32,7 +32,7 @@ void main()
 	float ambient = 0.20f;
 
 // diffuse lighting
-	vec3 normal = normalize(oNormal);
+	vec3 normal = normalize(Normal);
 	vec3 lightDirection = normalize(vec3(1.0f, 1.0f, 0.0f));
 	float diffuse = max(dot(normal, lightDirection), 0.0f);
 
@@ -43,7 +43,7 @@ void main()
 	float specAmount = pow(max(dot(viewDirection, reflectionDirection), 0.0f), 16);
 	float specular = specAmount * specularLight;
 
-	vec4 lightSource = (texture(diffuse0, texCoord) * (diffuse + ambient) + texture(specular0, texCoord).r * specular) * lightColor;
+	vec4 lightSource = (texture(diffuse0, TexCoord) * (diffuse + ambient) + texture(specular0, TexCoord).r * specular) * lightColor;
 	float depth = logisticDepth(gl_FragCoord.z, 0.8f, 3.0f);
 	fragColor = lightSource * (1.0f - depth) + vec4(depth * vec3(0.85f, 0.85f, 0.90f), 1.0f);
 }
